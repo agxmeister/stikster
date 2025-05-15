@@ -7,8 +7,12 @@ export class TaskRepository {
     {
     }
 
-    async getByKeys(keys: string[]) {
-        const tasks = await this.jira.getByJql(`key in (${keys.join(', ')})`);
-        console.log(tasks);
+    async retrieveByKey(key: string) {
+        const [task] = await this.jira.search(`key = ${key}`);
+        return task;
+    }
+
+    async retrieveByKeys(keys: string[]) {
+        return await this.jira.search(`key in (${keys.join(', ')})`);
     }
 }

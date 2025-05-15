@@ -7,7 +7,7 @@ export class Jira
     {
     }
 
-    async getByJql(jql: string): Promise<any>
+    async search(jql: string): Promise<any>
     {
         const fetchAll = async (nextPageToken: string|null = null): Promise<any> => {
             const response = await fetch(`${this.url}/search/jql`, {
@@ -22,6 +22,7 @@ export class Jira
                     jql: jql,
                     fields: [
                         "key",
+                        "summary",
                     ],
                     nextPageToken: nextPageToken,
                 }),
@@ -29,6 +30,7 @@ export class Jira
             const data = await response.json();
             const tasks = data.issues.map((issue: any) => ({
                 key: issue.key,
+                summary: issue.fields.summary,
             }));
             if (!data?.nextPageToken) {
                 return tasks;
