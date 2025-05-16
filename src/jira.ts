@@ -24,13 +24,34 @@ export class Jira
                         "key",
                         "summary",
                     ],
+                    expand: "changelog",
                     nextPageToken: nextPageToken,
                 }),
             });
             const data = await response.json();
+
+            const getStatusChanges = (issue: any) => issue.changelog.histories
+                .reduce(
+                    (acc: any[], history: any) => [
+                        ...acc,
+                        ...history.items.map(
+                            (item: any) => ({
+                                ...item,
+                                created: history.created,
+                            })
+                        )],
+                    [],
+                )
+                .filter((item: any) => item.field === "status");
+
+            const getCompletionDate = (statusChanges: any) => statusChanges
+                .sort((a: any, b: any) => a.created > b.created ? -1 : a.created < b.created ? 1 : 0)
+                .find((change: any) => change.to === "10002")?.created || null;
+
             const tasks = data.issues.map((issue: any) => ({
                 key: issue.key,
                 summary: issue.fields.summary,
+                completed: getCompletionDate(getStatusChanges(issue)),
             }));
             if (!data?.nextPageToken) {
                 return tasks;
