@@ -7,17 +7,21 @@ export class Jira
     {
     }
 
+    async getStatuses(): Promise<any>
+    {
+        const response = await fetch(`${this.url}/status`, {
+            method: "GET",
+            headers: this.getHeaders(),
+        });
+        return await response.json();
+    }
+
     async search(jql: string): Promise<any>
     {
         const fetchAll = async (nextPageToken: string|null = null): Promise<any> => {
             const response = await fetch(`${this.url}/search/jql`, {
                 method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Basic ${Buffer.from(
-                        `${this.username}:${this.password}`
-                    ).toString('base64')}`,
-                },
+                headers: this.getHeaders(),
                 body: JSON.stringify({
                     jql: jql,
                     fields: [
@@ -29,6 +33,14 @@ export class Jira
                 }),
             });
             const data = await response.json();
+
+            const statuses = await this.getStatuses();
+            const progressStatusIds = statuses
+                .filter((status: any) => status.statusCategory.name === "In Progress")
+                .map((status: any) => status.id);
+            const doneStatusIds = statuses
+                .filter((status: any) => status.statusCategory.name === "Done")
+                .map((status: any) => status.id);
 
             const getStatusChanges = (issue: any) => issue.changelog.histories
                 .reduce(
@@ -44,14 +56,19 @@ export class Jira
                 )
                 .filter((item: any) => item.field === "status");
 
-            const getCompletionDate = (statusChanges: any) => statusChanges
+            const getDateStarted = (statusChanges: any) => statusChanges
+                .sort((a: any, b: any) => a.created > b.created ? 1 : a.created < b.created ? -1 : 0)
+                .find((change: any) => progressStatusIds.includes(change.to))?.created || null;
+
+            const getDateCompleted = (statusChanges: any) => statusChanges
                 .sort((a: any, b: any) => a.created > b.created ? -1 : a.created < b.created ? 1 : 0)
-                .find((change: any) => change.to === "10002")?.created || null;
+                .find((change: any) => doneStatusIds.includes(change.to))?.created || null;
 
             const tasks = data.issues.map((issue: any) => ({
                 key: issue.key,
                 summary: issue.fields.summary,
-                completed: getCompletionDate(getStatusChanges(issue)),
+                started: getDateStarted(getStatusChanges(issue)),
+                completed: getDateCompleted(getStatusChanges(issue)),
             }));
             if (!data?.nextPageToken) {
                 return tasks;
@@ -60,5 +77,15 @@ export class Jira
             }
         };
         return await fetchAll();
+    }
+
+    getHeaders(): Record<string, any>
+    {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${Buffer.from(
+                `${this.username}:${this.password}`
+            ).toString('base64')}`,
+        }
     }
 }
