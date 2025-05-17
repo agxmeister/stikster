@@ -1,5 +1,5 @@
 import {Container} from "inversify";
-import {Jira} from "@/jira";
+import {Jira} from "@/jira/jira";
 import {TaskRepository} from "@/modules/task/TaskRepository";
 import {Miro} from "@/miro";
 import {CardRepository} from "@/modules/card/CardRepository";

@@ -1,4 +1,5 @@
 import {injectable} from "inversify";
+import {getDateCompleted, getDateStarted, getStatusChanges} from "@/jira/utils";
 
 @injectable()
 export class Jira
@@ -42,34 +43,16 @@ export class Jira
                 .filter((status: any) => status.statusCategory.name === "Done")
                 .map((status: any) => status.id);
 
-            const getStatusChanges = (issue: any) => issue.changelog.histories
-                .reduce(
-                    (acc: any[], history: any) => [
-                        ...acc,
-                        ...history.items.map(
-                            (item: any) => ({
-                                ...item,
-                                created: history.created,
-                            })
-                        )],
-                    [],
-                )
-                .filter((item: any) => item.field === "status");
+            const tasks = data.issues.map((issue: any) => {
+                const statusChanges = getStatusChanges(issue)
+                return {
+                    key: issue.key,
+                    summary: issue.fields.summary,
+                    started: getDateStarted(statusChanges, progressStatusIds),
+                    completed: getDateCompleted(statusChanges, doneStatusIds),
+                }
+            });
 
-            const getDateStarted = (statusChanges: any) => statusChanges
-                .sort((a: any, b: any) => a.created > b.created ? 1 : a.created < b.created ? -1 : 0)
-                .find((change: any) => progressStatusIds.includes(change.to))?.created || null;
-
-            const getDateCompleted = (statusChanges: any) => statusChanges
-                .sort((a: any, b: any) => a.created > b.created ? -1 : a.created < b.created ? 1 : 0)
-                .find((change: any) => doneStatusIds.includes(change.to))?.created || null;
-
-            const tasks = data.issues.map((issue: any) => ({
-                key: issue.key,
-                summary: issue.fields.summary,
-                started: getDateStarted(getStatusChanges(issue)),
-                completed: getDateCompleted(getStatusChanges(issue)),
-            }));
             if (!data?.nextPageToken) {
                 return tasks;
             } else {
