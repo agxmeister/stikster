@@ -1,5 +1,5 @@
 import {container} from "@/container";
-import {TaskRepository} from "@/modules/task/TaskRepository";
+import {TaskRepository} from "@/modules/task";
 import {CardRepository} from "@/modules/card/CardRepository";
 
 export async function POST(request: Request): Promise<Response>
