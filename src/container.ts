@@ -3,11 +3,13 @@ import {Jira} from "@/jira/jira";
 import {TaskRepository} from "@/modules/task/TaskRepository";
 import {Miro} from "@/miro";
 import {CardRepository} from "@/modules/card/CardRepository";
+import {CardService} from "@/modules/card/CardService";
 
 const container: Container = new Container();
 
 container.bind(TaskRepository).toSelf();
 container.bind(CardRepository).toSelf();
+container.bind(CardService).toSelf();
 container.bind(Jira).toDynamicValue(() => new Jira(
     process.env.JIRA_URL!,
     process.env.JIRA_USERNAME!,

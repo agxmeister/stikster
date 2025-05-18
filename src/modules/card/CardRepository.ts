@@ -1,5 +1,6 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
+import {Task} from "@/modules/task";
 
 @injectable()
 export class CardRepository
@@ -8,8 +9,10 @@ export class CardRepository
     {
     }
 
-    async create(task: any): Promise<void>
+    async create(task: Task, column: number, row: number): Promise<void>
     {
-        await this.miro.addStickyNote(task.summary);
+        for (let i = 0; i < task.length; i++) {
+            await this.miro.addStickyNote(task.summary, (column + i) * 100, row * 100);
+        }
     }
 }

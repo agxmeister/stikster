@@ -3,4 +3,5 @@ export type Task = {
     summary: string;
     started: string;
     completed: string;
+    length: number;
 }

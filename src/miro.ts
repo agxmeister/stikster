@@ -7,7 +7,7 @@ export class Miro
     {
     }
 
-    async addStickyNote(content: string)
+    async addStickyNote(content: string, x: number = 0, y: number = 0): Promise<void>
     {
         const response = await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
             method: "POST",
@@ -29,8 +29,8 @@ export class Miro
                     width: 100,
                 },
                 position: {
-                    x: 0,
-                    y: 0,
+                    x: x,
+                    y: y,
                     origin: "center",
                 },
             }),

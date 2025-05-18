@@ -1,6 +1,6 @@
 import {container} from "@/container";
 import {TaskRepository} from "@/modules/task";
-import {CardRepository} from "@/modules/card/CardRepository";
+import {CardService} from "@/modules/card";
 
 export async function POST(request: Request): Promise<Response>
 {
@@ -8,10 +8,8 @@ export async function POST(request: Request): Promise<Response>
 
     const taskRepository = container.get(TaskRepository);
     const tasks = await taskRepository.retrievePileByKey(data.key);
-    const cardRepository = container.get(CardRepository);
-    for (const task of tasks) {
-        await cardRepository.create(task);
-    }
+    const cardService = container.get(CardService);
+    await cardService.mapPile(tasks);
 
     return Response.json(tasks);
 }
