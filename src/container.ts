@@ -1,14 +1,14 @@
 import {Container} from "inversify";
 import {Jira} from "@/jira/jira";
-import {TaskRepository} from "@/modules/task/TaskRepository";
 import {Miro} from "@/miro";
-import {CardRepository} from "@/modules/card/CardRepository";
-import {CardService} from "@/modules/card/CardService";
+import {TaskRepository, TaskService} from "@/modules/task";
+import {CardRepository, CardService} from "@/modules/card";
 
 const container: Container = new Container();
 
 container.bind(TaskRepository).toSelf();
 container.bind(CardRepository).toSelf();
+container.bind(TaskService).toSelf();
 container.bind(CardService).toSelf();
 container.bind(Jira).toDynamicValue(() => new Jira(
     process.env.JIRA_URL!,
