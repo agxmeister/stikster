@@ -3,7 +3,8 @@ import {Task} from "@/modules/task/types";
 
 export const refineJiraData = (data: any): Task => ({
     ...data,
-    length: getWorkdaysDiff(data.started, data.completed),
+    started: data.started ?? data.completed ?? new Date(),
+    length: data.started && data.completed ? getWorkdaysDiff(data.started, data.completed) : 1,
 });
 
 export const getWorkdaysDiff = (start: string, end: string) => {
