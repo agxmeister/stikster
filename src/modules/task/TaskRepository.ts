@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
 import {Jira} from "@/jira/jira";
-import {getTask} from "@/modules/task";
+import {refineJiraData} from "@/modules/task";
 import type {Task} from "@/modules/task";
 
 @injectable()
@@ -20,6 +20,6 @@ export class TaskRepository {
 
     async retrieveByJql(jql: string): Promise<Task[]> {
         return (await this.jira.search(jql))
-            .map(getTask);
+            .map(refineJiraData);
     }
 }
