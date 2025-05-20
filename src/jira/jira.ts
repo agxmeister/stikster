@@ -28,6 +28,7 @@ export class Jira
                     fields: [
                         "key",
                         "summary",
+                        "issuetype",
                     ],
                     expand: "changelog",
                     nextPageToken: nextPageToken,
@@ -47,6 +48,7 @@ export class Jira
                 const statusChanges = getStatusChanges(issue)
                 return {
                     key: issue.key,
+                    type: issue.fields.issuetype.name,
                     summary: issue.fields.summary,
                     started: getDateStarted(statusChanges, progressStatusIds),
                     completed: getDateCompleted(statusChanges, doneStatusIds),
