@@ -12,6 +12,40 @@ export const getStatusChanges = (issue: any) => issue.changelog.histories
     )
     .filter((item: any) => item.field === "status");
 
+export const getIntervals = (
+    statusChanges: any,
+    progressStatusIds: string[],
+    doneStatusIds: string[],
+): any => first(statusChanges).reduce((acc: any[], change: any) => {
+    const isInProgressOrDone = [...progressStatusIds, ...doneStatusIds].includes(change.to);
+    const isDone = doneStatusIds.includes(change.to);
+    const last = acc[acc.length - 1];
+
+    if (isInProgressOrDone) {
+        if (!last || last.final) {
+            acc.push({
+                start: change.created,
+                end: change.created,
+                final: isDone,
+            });
+        } else {
+            acc[acc.length - 1] = {
+                ...last,
+                end: change.created,
+                final: isDone,
+            };
+        }
+    } else if (last && !last.final) {
+        acc[acc.length - 1] = {
+            ...last,
+            end: change.created,
+            final: true,
+        };
+    }
+
+    return acc;
+}, []);
+
 export const getDateStarted = (statusChanges: any, statusIds: string[]) =>
     first(statusChanges)
         .find((change: any) => statusIds.includes(change.to))?.created || null;

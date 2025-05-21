@@ -1,5 +1,5 @@
 import {injectable} from "inversify";
-import {getDateCompleted, getDateStarted, getStatusChanges} from "@/jira/utils";
+import {getDateCompleted, getDateStarted, getIntervals, getStatusChanges} from "@/jira/utils";
 
 @injectable()
 export class Jira
@@ -45,13 +45,14 @@ export class Jira
                 .map((status: any) => status.id);
 
             const tasks = data.issues.map((issue: any) => {
-                const statusChanges = getStatusChanges(issue)
+                const statusChanges = getStatusChanges(issue);
                 return {
                     key: issue.key,
                     type: issue.fields.issuetype.name,
                     summary: issue.fields.summary,
                     started: getDateStarted(statusChanges, progressStatusIds),
                     completed: getDateCompleted(statusChanges, doneStatusIds),
+                    intervals: getIntervals(statusChanges, progressStatusIds, doneStatusIds),
                 }
             });
 
