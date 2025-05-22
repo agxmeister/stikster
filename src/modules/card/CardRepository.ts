@@ -16,4 +16,9 @@ export class CardRepository
             await this.miro.addStickyNote(task.summary, getColor(task, i), (column + i) * 100, row * 100);
         }
     }
+
+    async find(labels: string[]): Promise<any[]>
+    {
+        return await this.miro.findStickyNotes(labels);
+    }
 }

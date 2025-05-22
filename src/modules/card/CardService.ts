@@ -10,6 +10,11 @@ export class CardService
     {
     }
 
+    async find(labels: string[]): Promise<any[]>
+    {
+        return await this.cardRepository.find(labels);
+    }
+
     async mapPile(tasks: Task[]): Promise<void>
     {
         const earliestTask = tasks.reduce(

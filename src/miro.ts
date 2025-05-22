@@ -9,7 +9,7 @@ export class Miro
 
     async addStickyNote(content: string, color: string, x: number = 0, y: number = 0): Promise<void>
     {
-        const response = await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
+        await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -35,5 +35,33 @@ export class Miro
                 },
             }),
         });
+    }
+
+    async findStickyNotes(labels: string[]): Promise<any[]>
+    {
+        const result: any[] = [];
+
+        let cursor = null;
+        do {
+            const response: Response = await fetch(`${this.url}/boards/${this.board}/items?type=sticky_note&limit=50&cursor=${cursor ?? ""}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`,
+                },
+            });
+            const json = await response.json();
+
+            for (const stickyNote of json.data) {
+                if (!labels.some((value) => stickyNote.data.content.includes(value))) {
+                    continue;
+                }
+                result.push(stickyNote);
+            }
+
+            cursor = json.cursor;
+        } while (cursor);
+
+        return result;
     }
 }
