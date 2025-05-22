@@ -13,7 +13,7 @@ export class CardRepository
     async create(task: Task, column: number, row: number): Promise<void>
     {
         for (let i = 0; i < task.length; i++) {
-            await this.miro.addStickyNote(task.summary, getColor(task), (column + i) * 100, row * 100);
+            await this.miro.addStickyNote(task.summary, getColor(task, i), (column + i) * 100, row * 100);
         }
     }
 }

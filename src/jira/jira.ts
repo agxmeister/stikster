@@ -37,22 +37,20 @@ export class Jira
             const data = await response.json();
 
             const statuses = await this.getStatuses();
-            const progressStatusIds = statuses
-                .filter((status: any) => status.statusCategory.name === "In Progress")
-                .map((status: any) => status.id);
-            const doneStatusIds = statuses
-                .filter((status: any) => status.statusCategory.name === "Done")
-                .map((status: any) => status.id);
-
             const tasks = data.issues.map((issue: any) => {
-                const statusChanges = getStatusChanges(issue);
                 return {
                     key: issue.key,
                     type: issue.fields.issuetype.name,
                     summary: issue.fields.summary,
-                    started: getDateStarted(statusChanges, progressStatusIds),
-                    completed: getDateCompleted(statusChanges, doneStatusIds),
-                    intervals: getIntervals(statusChanges, progressStatusIds, doneStatusIds),
+                    intervals: getIntervals(
+                        getStatusChanges(issue),
+                        statuses
+                            .filter((status: any) => status.statusCategory.name === "In Progress")
+                            .map((status: any) => status.id),
+                        statuses
+                            .filter((status: any) => status.statusCategory.name === "Done")
+                            .map((status: any) => status.id),
+                    ),
                 }
             });
 
