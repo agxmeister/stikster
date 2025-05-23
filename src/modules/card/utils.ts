@@ -18,6 +18,7 @@ export const getColor = (task: Task, indent: number): color => {
         .with({type: 'Dev MetaCloud Sub-task'}, (): color => 'violet')
         .with({type: 'QA Sub-task'}, (): color => 'light_pink')
         .with({type: 'Bug'}, (): color => 'red')
+        .with({type: 'Automation Bug'}, (): color => 'red')
         .otherwise((): color => 'light_yellow');
 }
 
