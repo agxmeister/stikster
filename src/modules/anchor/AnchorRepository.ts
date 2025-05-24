@@ -16,7 +16,11 @@ export class AnchorRepository
                 position: {
                     x: stickyNote.position.x,
                     y: stickyNote.position.y,
-                }
+                },
+                size: {
+                    width: stickyNote.geometry.width,
+                    height: stickyNote.geometry.height,
+                },
             }))
             .reduce((_, anchor) => anchor);
     }
