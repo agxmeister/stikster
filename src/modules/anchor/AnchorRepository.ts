@@ -1,6 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
 import {Anchor} from "@/modules/anchor/types";
+import * as fs from "node:fs";
 
 @injectable()
 export class AnchorRepository
@@ -10,7 +11,7 @@ export class AnchorRepository
     }
 
     async create(label: string): Promise<Anchor | null> {
-        return (await this.miro.findStickyNotes([label]))
+        const anchor = (await this.miro.findStickyNotes([label]))
             .map((stickyNote: any) => ({
                 id: stickyNote.id,
                 position: {
@@ -23,5 +24,7 @@ export class AnchorRepository
                 },
             }))
             .reduce((_, anchor) => anchor);
+        await fs.promises.writeFile(`./data/anchors/${anchor.id}.json`, JSON.stringify(anchor, null, 4));
+        return anchor;
     }
 }

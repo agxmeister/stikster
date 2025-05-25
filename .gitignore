@@ -3,6 +3,8 @@
 
 # production
 /build
+/data/anchors/*
+!/data/anchors/.gitkeep
 
 # misc
 .DS_Store
