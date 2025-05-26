@@ -13,4 +13,9 @@ export class AnchorService
     {
         return await this.anchorRepository.create(label);
     }
+
+    async get(id: string): Promise<Anchor | null>
+    {
+        return await this.anchorRepository.get(id);
+    }
 }

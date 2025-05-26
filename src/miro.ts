@@ -7,7 +7,7 @@ export class Miro
     {
     }
 
-    async addStickyNote(content: string, color: string, x: number = 0, y: number = 0): Promise<void>
+    async addStickyNote(content: string, color: string, x: number = 0, y: number = 0, width: number = 100): Promise<void>
     {
         await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
             method: "POST",
@@ -26,7 +26,7 @@ export class Miro
                     textAlignVertical: "middle",
                 },
                 geometry: {
-                    width: 100,
+                    width: width,
                 },
                 position: {
                     x: x,
