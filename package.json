@@ -15,7 +15,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "reflect-metadata": "^0.2.2",
-    "ts-pattern": "^5.7.1"
+    "ts-pattern": "^5.7.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",
