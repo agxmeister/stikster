@@ -37,6 +37,17 @@ export class Miro
         });
     }
 
+    async removeStickyNote(id: string): Promise<void>
+    {
+        await fetch(`${this.url}/boards/${this.board}/sticky_notes/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`,
+            }
+        });
+    }
+
     async findStickyNotes(labels: string[]): Promise<any[]>
     {
         const result: any[] = [];

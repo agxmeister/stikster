@@ -40,4 +40,14 @@ export class AnchorRepository
             return null;
         }
     }
+
+    async delete(id: string): Promise<void>
+    {
+        await this.miro.removeStickyNote(id);
+        try {
+            await fs.promises.unlink(`./data/anchors/${id}.json`);
+        } catch (error) {
+            console.error(`Error deleting anchor with id ${id}:`, error);
+        }
+    }
 }

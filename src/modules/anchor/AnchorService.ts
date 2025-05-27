@@ -18,4 +18,9 @@ export class AnchorService
     {
         return await this.anchorRepository.get(id);
     }
+
+    async delete(id: string): Promise<void>
+    {
+        await this.anchorRepository.delete(id);
+    }
 }

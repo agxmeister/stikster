@@ -25,7 +25,7 @@ export class CardService
 
         let row = 0;
         for (const task of tasks.sort((a: Task, b: Task) => a.started > b.started ? 1 : a.started < b.started ? -1 : 0)) {
-            const column = getWorkdaysDiff(earliestTask.started, task.started)
+            const column = getWorkdaysDiff(earliestTask.started, task.started) - 1;
             await this.cardRepository.create(task, base, column, row);
             row++;
         }
