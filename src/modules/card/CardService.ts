@@ -2,7 +2,6 @@ import {Task} from "@/modules/task";
 import {inject, injectable} from "inversify";
 import {CardRepository} from "@/modules/card/CardRepository";
 import {getWorkdaysDiff} from "@/modules/task/utils";
-import {Anchor} from "@/modules/anchor/types";
 import {Base} from "@/modules/card/types";
 
 @injectable()

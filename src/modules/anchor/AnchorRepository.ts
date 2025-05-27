@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
-import {Anchor} from "@/modules/anchor/types";
+import {Anchor} from "@/modules/anchor";
 import * as fs from "node:fs";
 
 @injectable()

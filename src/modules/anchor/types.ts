@@ -1,4 +1,4 @@
-import {Base} from "@/modules/card/types";
+import {Base} from "@/modules/card";
 
 export type Anchor = {
     id: string,

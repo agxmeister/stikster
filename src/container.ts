@@ -3,17 +3,19 @@ import {Jira} from "@/jira/jira";
 import {Miro} from "@/miro";
 import {TaskRepository, TaskService} from "@/modules/task";
 import {CardRepository, CardService} from "@/modules/card";
-import {AnchorRepository} from "@/modules/anchor/AnchorRepository";
-import {AnchorService} from "@/modules/anchor/AnchorService";
+import {AnchorRepository, AnchorService} from "@/modules/anchor";
+import {TimelineRepository, TimelineService} from "@/modules/timeline";
 
 const container: Container = new Container();
 
 container.bind(TaskRepository).toSelf();
 container.bind(CardRepository).toSelf();
 container.bind(AnchorRepository).toSelf();
+container.bind(TimelineRepository).toSelf();
 container.bind(TaskService).toSelf();
 container.bind(CardService).toSelf();
 container.bind(AnchorService).toSelf();
+container.bind(TimelineService).toSelf();
 container.bind(Jira).toDynamicValue(() => new Jira(
     process.env.JIRA_URL!,
     process.env.JIRA_USERNAME!,

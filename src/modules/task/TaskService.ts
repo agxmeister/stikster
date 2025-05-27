@@ -9,8 +9,8 @@ export class TaskService
     {
     }
 
-    async getPile(key: string): Promise<Task[]>
+    async findByFootprint(taskId: string): Promise<Task[]>
     {
-        return this.taskRepository.retrieveByJql(`key in (${key}) OR parent in (${key}) OR issue in linkedIssues(${key}, "Introduces")`);
+        return this.taskRepository.retrieveByJql(`key in (${taskId}) OR parent in (${taskId}) OR issue in linkedIssues(${taskId}, "Introduces")`);
     }
 }

@@ -5,6 +5,8 @@
 /build
 /data/anchors/*
 !/data/anchors/.gitkeep
+/data/timelines/*
+!/data/timelines/.gitkeep
 
 # misc
 .DS_Store
