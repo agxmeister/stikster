@@ -16,7 +16,7 @@ export class VisualizationRepository
 
     async create(timeline: Timeline, anchor: Anchor): Promise<Visualization>
     {
-        const tracks = await this.cardService.createPile(timeline.branches[0].tasks, anchor!.base);
+        const tracks = await this.cardService.createPile(timeline.branches[0].tasks, anchor!.cursor);
         await this.anchorService.delete(anchor!.id);
         return {
             cards: tracks,

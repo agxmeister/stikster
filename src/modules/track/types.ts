@@ -1,7 +1,7 @@
 export type Track = {
 }
 
-export type Base = {
+export type Cursor = {
     position: Position,
     size: Size,
 }

@@ -1,6 +1,6 @@
-import {Base} from "../track";
+import {Cursor} from "../track";
 
 export type Anchor = {
     id: string,
-    base: Base,
+    cursor: Cursor,
 }
