@@ -1,3 +1,6 @@
+export type Card = {
+}
+
 export type Base = {
     position: Position,
     size: Size,

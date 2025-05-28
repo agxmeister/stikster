@@ -1,8 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
 import {Task} from "@/modules/task";
-import {getColor} from "@/modules/card/utils";
-import {Base} from "@/modules/card/types";
+import {getColor, Base, Card} from "@/modules/card";
 
 @injectable()
 export class CardRepository
@@ -11,17 +10,20 @@ export class CardRepository
     {
     }
 
-    async create(task: Task, base: Base, column: number, row: number): Promise<void>
+    async create(task: Task, base: Base, column: number, row: number): Promise<Card>
     {
+        const card = [];
         for (let i = 0; i < task.length; i++) {
-            await this.miro.addStickyNote(
+            const leaf = await this.miro.addStickyNote(
                 task.summary,
                 getColor(task, i),
                 base.position.x + ((column + i) * base.size.width),
                 base.position.y + (row * base.size.height),
                 base.size.width
             );
+            card.push(leaf);
         }
+        return card;
     }
 
     async find(labels: string[]): Promise<any[]>

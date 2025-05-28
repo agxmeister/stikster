@@ -1,3 +1,4 @@
-export {CardRepository} from "@/modules/card/CardRepository";
-export {CardService} from "@/modules/card/CardService";
-export type {Base} from "@/modules/card/types";
+export {CardRepository} from "./CardRepository";
+export {CardService} from "./CardService";
+export {getColor} from "./utils";
+export type {Card, Base} from "./types";

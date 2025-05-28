@@ -1,7 +1,7 @@
+import fs from "node:fs";
 import {inject, injectable} from "inversify";
 import {TaskService} from "@/modules/task";
 import {Timeline} from "@/modules/timeline";
-import fs from "node:fs";
 import {v4 as uuid} from "uuid";
 
 @injectable()
@@ -42,5 +42,15 @@ export class TimelineRepository
         await fs.promises.writeFile(`./data/timelines/${timeline.id}.json`, JSON.stringify(timeline, null, 4));
 
         return timeline;
+    }
+
+    async get(id: string): Promise<Timeline | null>
+    {
+        try {
+            const data = await fs.promises.readFile(`./data/timelines/${id}.json`, 'utf-8');
+            return JSON.parse(data);
+        } catch (error) {
+            return null;
+        }
     }
 }

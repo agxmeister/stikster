@@ -7,9 +7,9 @@ export class Miro
     {
     }
 
-    async addStickyNote(content: string, color: string, x: number = 0, y: number = 0, width: number = 100): Promise<void>
+    async addStickyNote(content: string, color: string, x: number = 0, y: number = 0, width: number = 100): Promise<any>
     {
-        await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
+        const response = await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -35,6 +35,7 @@ export class Miro
                 },
             }),
         });
+        return await response.json()
     }
 
     async removeStickyNote(id: string): Promise<void>

@@ -12,4 +12,9 @@ export class TimelineService
     {
         return await this.timelineRepository.create(taskIds);
     }
+
+    async get(id: string): Promise<Timeline | null>
+    {
+        return await this.timelineRepository.get(id);
+    }
 }
