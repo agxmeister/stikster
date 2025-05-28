@@ -1,16 +1,16 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
 import {Task} from "@/modules/task";
-import {getColor, Base, Card} from "@/modules/card";
+import {getColor, Base, Track} from "./";
 
 @injectable()
-export class CardRepository
+export class TrackRepository
 {
     constructor(@inject(Miro) readonly miro: Miro)
     {
     }
 
-    async create(task: Task, base: Base, column: number, row: number): Promise<Card>
+    async create(task: Task, base: Base, column: number, row: number): Promise<Track>
     {
         const card = [];
         for (let i = 0; i < task.length; i++) {

@@ -2,13 +2,13 @@ import {inject, injectable} from "inversify";
 import {Timeline} from "@/modules/timeline";
 import {Anchor, AnchorService} from "@/modules/anchor";
 import {Visualization} from "@/modules/visualization";
-import {CardService} from "@/modules/card";
+import {TrackService} from "@/modules/track";
 
 @injectable()
 export class VisualizationRepository
 {
     constructor(
-        @inject(CardService) readonly cardService: CardService,
+        @inject(TrackService) readonly cardService: TrackService,
         @inject(AnchorService) readonly anchorService: AnchorService,
     )
     {
@@ -16,10 +16,10 @@ export class VisualizationRepository
 
     async create(timeline: Timeline, anchor: Anchor): Promise<Visualization>
     {
-        const cards = await this.cardService.createPile(timeline.branches[0].tasks, anchor!.base);
+        const tracks = await this.cardService.createPile(timeline.branches[0].tasks, anchor!.base);
         await this.anchorService.delete(anchor!.id);
         return {
-            cards: cards,
+            cards: tracks,
         };
     }
 }

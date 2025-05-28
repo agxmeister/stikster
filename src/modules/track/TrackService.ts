@@ -1,12 +1,12 @@
 import {Task} from "@/modules/task";
 import {inject, injectable} from "inversify";
-import {CardRepository, Card, Base} from "@/modules/card";
 import {getWorkdaysDiff} from "@/modules/task/utils";
+import {TrackRepository, Track, Base} from "./";
 
 @injectable()
-export class CardService
+export class TrackService
 {
-    constructor(@inject(CardRepository) readonly cardRepository: CardRepository)
+    constructor(@inject(TrackRepository) readonly cardRepository: TrackRepository)
     {
     }
 
@@ -15,7 +15,7 @@ export class CardService
         return await this.cardRepository.find(labels);
     }
 
-    async createPile(tasks: Task[], base: Base): Promise<Card[]>
+    async createPile(tasks: Task[], base: Base): Promise<Track[]>
     {
         const earliestTask = tasks.reduce(
             (earliest: Task, task: Task) => earliest.started < task.started ? earliest : task

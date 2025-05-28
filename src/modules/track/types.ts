@@ -1,4 +1,4 @@
-export type Card = {
+export type Track = {
 }
 
 export type Base = {

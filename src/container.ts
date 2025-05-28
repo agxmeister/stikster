@@ -2,7 +2,7 @@ import {Container} from "inversify";
 import {Jira} from "@/jira/jira";
 import {Miro} from "@/miro";
 import {TaskRepository, TaskService} from "@/modules/task";
-import {CardRepository, CardService} from "@/modules/card";
+import {TrackRepository, TrackService} from "@/modules/track";
 import {AnchorRepository, AnchorService} from "@/modules/anchor";
 import {TimelineRepository, TimelineService} from "@/modules/timeline";
 import {VisualizationRepository, VisualizationService} from "@/modules/visualization";
@@ -10,12 +10,12 @@ import {VisualizationRepository, VisualizationService} from "@/modules/visualiza
 const container: Container = new Container();
 
 container.bind(TaskRepository).toSelf();
-container.bind(CardRepository).toSelf();
+container.bind(TrackRepository).toSelf();
 container.bind(AnchorRepository).toSelf();
 container.bind(TimelineRepository).toSelf();
 container.bind(VisualizationRepository).toSelf();
 container.bind(TaskService).toSelf();
-container.bind(CardService).toSelf();
+container.bind(TrackService).toSelf();
 container.bind(AnchorService).toSelf();
 container.bind(TimelineService).toSelf();
 container.bind(VisualizationService).toSelf();

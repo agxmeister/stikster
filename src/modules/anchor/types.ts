@@ -1,4 +1,4 @@
-import {Base} from "@/modules/card";
+import {Base} from "../track";
 
 export type Anchor = {
     id: string,
