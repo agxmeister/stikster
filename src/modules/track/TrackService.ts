@@ -1,35 +1,36 @@
 import {Task} from "@/modules/task";
 import {inject, injectable} from "inversify";
 import {getWorkdaysDiff} from "@/modules/task/utils";
-import {TrackRepository, Track, Cursor} from "./";
+import {TrackRepository, Track, Cursor, moveCursor} from "./";
 
 @injectable()
 export class TrackService
 {
-    constructor(@inject(TrackRepository) readonly cardRepository: TrackRepository)
+    constructor(@inject(TrackRepository) readonly trackRepository: TrackRepository)
     {
     }
 
     async find(labels: string[]): Promise<any[]>
     {
-        return await this.cardRepository.find(labels);
+        return await this.trackRepository.find(labels);
     }
 
-    async createPile(tasks: Task[], cursor: Cursor): Promise<Track[]>
+    async createTracks(tasks: Task[], cursor: Cursor): Promise<[Track[], Cursor]>
     {
         const earliestTask = tasks.reduce(
             (earliest: Task, task: Task) => earliest.started < task.started ? earliest : task
         );
 
-        const cards = [];
+        const tracks = [];
 
         let row = 0;
         for (const task of tasks.sort((a: Task, b: Task) => a.started > b.started ? 1 : a.started < b.started ? -1 : 0)) {
             const column = getWorkdaysDiff(earliestTask.started, task.started) - 1;
-            cards.push(await this.cardRepository.create(task, cursor, column, row));
+            const [newTrack, _] = await this.trackRepository.create(task, moveCursor(cursor, column, row));
+            tracks.push(newTrack);
             row++;
         }
 
-        return cards
+        return [tracks, moveCursor(cursor, 0, row)];
     }
 }

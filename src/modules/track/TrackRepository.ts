@@ -1,7 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
 import {Task} from "@/modules/task";
-import {getColor, Track, Cursor} from "./";
+import {getColor, Track, Cursor, moveCursor} from "./";
 
 @injectable()
 export class TrackRepository
@@ -10,20 +10,20 @@ export class TrackRepository
     {
     }
 
-    async create(task: Task, cursor: Cursor, column: number, row: number): Promise<Track>
+    async create(task: Task, cursor: Cursor): Promise<[Track, Cursor]>
     {
-        const card = [];
+        const track = [];
         for (let i = 0; i < task.length; i++) {
             const leaf = await this.miro.addStickyNote(
                 task.summary,
                 getColor(task, i),
-                cursor.position.x + ((column + i) * cursor.size.width),
-                cursor.position.y + (row * cursor.size.height),
+                cursor.position.x + (i * cursor.size.width),
+                cursor.position.y,
                 cursor.size.width
             );
-            card.push(leaf);
+            track.push(leaf);
         }
-        return card;
+        return [track, moveCursor(cursor, 0, task.length)];
     }
 
     async find(labels: string[]): Promise<any[]>

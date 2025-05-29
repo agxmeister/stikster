@@ -1,20 +1,26 @@
 import {inject, injectable} from "inversify";
 import {Timeline} from "@/modules/timeline";
 import {Visualization} from "@/modules/visualization";
-import {TrackService, Cursor} from "@/modules/track";
+import {TrackService, Track, Cursor} from "@/modules/track";
 
 @injectable()
 export class VisualizationRepository
 {
-    constructor(@inject(TrackService) readonly cardService: TrackService)
+    constructor(@inject(TrackService) readonly trackService: TrackService)
     {
     }
 
     async create(timeline: Timeline, cursor: Cursor): Promise<Visualization>
     {
-        const tracks = await this.cardService.createPile(timeline.branches[0].tasks, cursor);
+        const tracks = [] as Track[];
+        let currentCursor = cursor;
+        for (const branch of timeline.branches) {
+            const [newTracks, newCursor] = await this.trackService.createTracks(branch.tasks, currentCursor);
+            tracks.push(newTracks);
+            currentCursor = newCursor;
+        }
         return {
-            cards: tracks,
+            tracks: tracks,
         };
     }
 }

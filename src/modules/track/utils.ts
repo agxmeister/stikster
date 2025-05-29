@@ -1,7 +1,8 @@
 import {match} from 'ts-pattern';
-import {Task} from "@/modules/task";
 import {isWithinInterval, startOfDay, endOfDay} from 'date-fns';
+import {Task} from "@/modules/task";
 import {getWorkday} from "@/modules/task/utils";
+import {Cursor} from "@/modules/track";
 
 export type color =
     'gray' | 'light_yellow' | 'yellow' | 'orange' | 'light_green' | 'green' | 'dark_green' | 'cyan' | 'light_pink' |
@@ -22,10 +23,17 @@ export const getColor = (task: Task, indent: number): color => {
         .otherwise((): color => 'light_yellow');
 }
 
-export const isInProgress = (task: Task, indent: number) => {
-    return task.intervals.some(interval =>
+export const isInProgress = (task: Task, indent: number) =>
+    task.intervals.some(interval =>
         isWithinInterval(getWorkday(task.started, indent), {
             start: startOfDay(new Date(interval.start)),
             end: endOfDay(new Date(interval.end)),
         }));
-    }
+
+export const moveCursor = (cursor: Cursor, x: number, y: number): Cursor => ({
+        ...cursor,
+        position: {
+            x: cursor.position.x + (x * cursor.size.width),
+            y: cursor.position.y + (y * cursor.size.height),
+        },
+    });
