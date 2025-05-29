@@ -19,14 +19,20 @@ export const refineJiraData = (data: any): Task => {
 
 export const getWorkday = (start: string, indent: number): Date => {
     let day = new Date(start);
-    let daysAdded = 0;
-    while (daysAdded < indent) {
-        day = addDays(day, 1);
-        if (isWorkday(day)) {
-            daysAdded++;
-        }
+    for (let i = 0; i < indent; i++) {
+        day = getNextWorkday(day);
     }
     return day;
+}
+
+export const getNextWorkday = (day: Date): Date => {
+    let nextWorkDay = new Date(day);
+    do {
+        nextWorkDay = addDays(nextWorkDay, 1);
+        if (isWorkday(nextWorkDay)) {
+            return nextWorkDay;
+        }
+    } while (true);
 }
 
 export const getWorkdaysDiff = (start: string, end: string) =>
