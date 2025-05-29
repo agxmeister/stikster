@@ -15,7 +15,10 @@ export class VisualizationRepository
         const tracks = [] as Track[];
         let currentCursor = cursor;
         for (const branch of timeline.branches) {
-            const [newTracks, newCursor] = await this.trackService.createTracks(branch.tasks, currentCursor);
+            const [newTracks, newCursor] = await this.trackService.createTracks(branch.tasks, currentCursor, {
+                begin: timeline.begin,
+                end: timeline.end,
+            });
             tracks.push(newTracks);
             currentCursor = newCursor;
         }
