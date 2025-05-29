@@ -1,5 +1,5 @@
 import {inject, injectable} from "inversify";
-import {Anchor} from "@/modules/anchor";
+import {Cursor} from "@/modules/track";
 import {Visualization, VisualizationRepository} from "@/modules/visualization";
 import {Timeline} from "@/modules/timeline";
 
@@ -10,8 +10,8 @@ export class VisualizationService
     {
     }
 
-    async create(timeline: Timeline, anchor: Anchor): Promise<Visualization>
+    async create(timeline: Timeline, cursor: Cursor): Promise<Visualization>
     {
-        return this.visualizationRepository.create(timeline, anchor);
+        return this.visualizationRepository.create(timeline, cursor);
     }
 }
