@@ -21,14 +21,14 @@ export class TrackService
         return await this.trackRepository.createByRange(range, cursor);
     }
 
-    async createTracks(tasks: Task[], cursor: Cursor, range: Range): Promise<[Track[], Cursor]>
+    async createTracksByTasks(tasks: Task[], cursor: Cursor, range: Range): Promise<[Track[], Cursor]>
     {
         const tracks = [];
 
         let row = 0;
         for (const task of tasks.sort((a: Task, b: Task) => a.started > b.started ? 1 : a.started < b.started ? -1 : 0)) {
             const column = getWorkdaysDiff(range.begin, task.started) - 1;
-            const [newTrack, _] = await this.trackRepository.create(task, moveCursor(cursor, column, row));
+            const [newTrack, _] = await this.trackRepository.createByTask(task, moveCursor(cursor, column, row));
             tracks.push(newTrack);
             row++;
         }

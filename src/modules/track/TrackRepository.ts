@@ -34,7 +34,7 @@ export class TrackRepository
         return [track, moveCursor(cursor, 0, 1)]
     }
 
-    async create(task: Task, cursor: Cursor): Promise<[Track, Cursor]>
+    async createByTask(task: Task, cursor: Cursor): Promise<[Track, Cursor]>
     {
         const track = [];
 
