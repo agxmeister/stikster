@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
     "date-fns": "^4.1.0",
     "inversify": "^7.5.1",
     "next": "15.3.2",
