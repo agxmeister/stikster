@@ -1,5 +1,6 @@
 import {inject, injectable} from "inversify";
-import {Timeline, TimelineRepository} from "@/modules/timeline";
+import {TimelineRepository} from "@/modules/timeline/repository/TimelineRepository";
+import type {Timeline} from "@/modules/timeline/types";
 
 @injectable()
 export class TimelineService

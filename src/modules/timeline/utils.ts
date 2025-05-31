@@ -1,5 +1,5 @@
 import {eachDayOfInterval, isWeekend, format, addDays} from "date-fns";
-import {Task} from "@/modules/task/types";
+import {Task} from "@/modules/timeline";
 
 export const holidays = [
     "2025-01-01", "2025-03-03", "2025-04-18", "2025-04-21", "2025-05-01", "2025-05-06", "2025-05-26",

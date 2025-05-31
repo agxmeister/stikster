@@ -1,8 +1,8 @@
 import fs from "node:fs";
-import {inject, injectable} from "inversify";
-import {TaskService} from "@/modules/task";
-import {Timeline} from "@/modules/timeline";
 import {v4 as uuid} from "uuid";
+import {inject, injectable} from "inversify";
+import {TaskService} from "@/modules/timeline/service/TaskService";
+import type {Timeline} from "@/modules/timeline/types";
 
 @injectable()
 export class TimelineRepository

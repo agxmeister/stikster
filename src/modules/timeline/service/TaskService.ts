@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
-import {TaskRepository} from "@/modules/task/TaskRepository";
-import {Task} from "@/modules/task/types";
+import {TaskRepository} from "@/modules/timeline/repository/TaskRepository";
+import type {Task} from "@/modules/timeline/types";
 
 @injectable()
 export class TaskService

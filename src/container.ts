@@ -1,10 +1,11 @@
 import {Container} from "inversify";
 import {Jira} from "@/jira/jira";
 import {Miro} from "@/miro";
-import {TaskRepository, TaskService} from "@/modules/task";
+//import {TaskRepository} from "@/modules/timeline/repository/TaskRepository";
+//import {TaskService} from "@/modules/timeline/service/TaskService";
 import {TrackRepository, TrackService} from "@/modules/track";
 import {AnchorRepository, AnchorService} from "@/modules/anchor";
-import {TimelineRepository, TimelineService} from "@/modules/timeline";
+import {TimelineRepository, TimelineService, TaskRepository, TaskService} from "@/modules/timeline";
 import {VisualizationRepository, VisualizationService} from "@/modules/visualization";
 
 const container: Container = new Container();

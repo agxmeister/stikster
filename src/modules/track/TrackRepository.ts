@@ -1,10 +1,10 @@
 import {inject, injectable} from "inversify";
 import {format} from "date-fns";
 import {Miro} from "@/miro";
-import {getNextWorkday, getWorkday, Task} from "@/modules/task";
 import {Range} from "@/modules/visualization";
 import {getColor, Track, Cursor, moveCursor} from "./";
-import {getWorkdaysDiff} from "@/modules/task";
+import {getNextWorkday, getWorkday, getWorkdaysDiff} from "@/modules/timeline/utils";
+import {Task} from "@/modules/timeline";
 
 @injectable()
 export class TrackRepository

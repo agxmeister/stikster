@@ -1,8 +1,8 @@
 import {inject, injectable} from "inversify";
-import {getWorkdaysDiff} from "@/modules/task/utils";
-import {Task} from "@/modules/task";
 import {TrackRepository, Track, Cursor, moveCursor} from "./";
 import {Range} from "@/modules/visualization";
+import {Task} from "@/modules/timeline";
+import {getWorkdaysDiff} from "@/modules/timeline/utils";
 
 @injectable()
 export class TrackService

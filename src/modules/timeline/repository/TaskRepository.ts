@@ -1,7 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Jira} from "@/jira/jira";
-import {refineJiraData} from "@/modules/task";
-import type {Task} from "@/modules/task";
+import type {Task} from "@/modules/timeline/types";
+import {refineJiraData} from "@/modules/timeline/utils";
 
 @injectable()
 export class TaskRepository {

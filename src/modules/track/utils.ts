@@ -1,8 +1,8 @@
 import {match} from 'ts-pattern';
 import {isWithinInterval, startOfDay, endOfDay} from 'date-fns';
-import {Task} from "@/modules/task";
-import {getWorkday} from "@/modules/task/utils";
+import {getWorkday} from "@/modules/timeline/utils";
 import {Cursor} from "@/modules/track";
+import {Task, Interval} from "@/modules/timeline";
 
 export type color =
     'gray' | 'light_yellow' | 'yellow' | 'orange' | 'light_green' | 'green' | 'dark_green' | 'cyan' | 'light_pink' |
@@ -24,7 +24,7 @@ export const getColor = (task: Task, indent: number): color => {
 }
 
 export const isInProgress = (task: Task, indent: number) =>
-    task.intervals.some(interval =>
+    task.intervals.some((interval: Interval) =>
         isWithinInterval(getWorkday(task.started, indent), {
             start: startOfDay(new Date(interval.start)),
             end: endOfDay(new Date(interval.end)),
