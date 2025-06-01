@@ -1,8 +1,7 @@
 import {inject, injectable} from "inversify";
 import {format} from "date-fns";
 import {Miro} from "@/miro";
-import {Range} from "@/modules/visualization";
-import {getColor, Track, Cursor, moveCursor} from "./";
+import {Track, Cursor, Range, getColor, moveCursor} from "@/modules/visualization";
 import {getNextWorkday, getWorkday, getWorkdaysDiff} from "@/modules/timeline/utils";
 import {Task} from "@/modules/timeline";
 

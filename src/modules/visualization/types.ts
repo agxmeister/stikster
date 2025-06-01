@@ -1,5 +1,3 @@
-import {Track} from "../track";
-
 export type Visualization = {
     tracks: Track[],
 }
@@ -7,4 +5,22 @@ export type Visualization = {
 export type Range = {
     begin: string,
     end: string,
+}
+
+export type Track = {
+}
+
+export type Cursor = {
+    position: Position,
+    size: Size,
+}
+
+export type Position = {
+    x: number,
+    y: number,
+}
+
+export type Size = {
+    width: number,
+    height: number,
 }

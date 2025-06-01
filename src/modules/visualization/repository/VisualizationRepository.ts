@@ -1,7 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Timeline} from "@/modules/timeline";
-import {Visualization} from "@/modules/visualization";
-import {TrackService, Track, Cursor} from "@/modules/track";
+import {TrackService} from "@/modules/visualization/service/TrackService";
+import {Visualization, Track, Cursor} from "@/modules/visualization";
 
 @injectable()
 export class VisualizationRepository

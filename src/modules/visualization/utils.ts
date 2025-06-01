@@ -1,8 +1,8 @@
 import {match} from 'ts-pattern';
 import {isWithinInterval, startOfDay, endOfDay} from 'date-fns';
 import {getWorkday} from "@/modules/timeline/utils";
-import {Cursor} from "@/modules/track";
 import {Task, Interval} from "@/modules/timeline";
+import {Cursor} from "@/modules/visualization";
 
 export type color =
     'gray' | 'light_yellow' | 'yellow' | 'orange' | 'light_green' | 'green' | 'dark_green' | 'cyan' | 'light_pink' |

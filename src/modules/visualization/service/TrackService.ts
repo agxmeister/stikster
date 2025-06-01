@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
-import {TrackRepository, Track, Cursor, moveCursor} from "./";
-import {Range} from "@/modules/visualization";
+import {TrackRepository} from "@/modules/visualization/repository/TrackRepository";
+import {Track, Cursor, Range, moveCursor} from "@/modules/visualization";
 import {Task} from "@/modules/timeline";
 import {getWorkdaysDiff} from "@/modules/timeline/utils";
 
