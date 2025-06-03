@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "nodemon": "nodemon",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -21,9 +22,12 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5"
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

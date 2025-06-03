@@ -1,4 +1,4 @@
-import {Cursor} from "../track";
+import {Cursor} from "@/modules/visualization";
 
 export type Anchor = {
     id: string,
