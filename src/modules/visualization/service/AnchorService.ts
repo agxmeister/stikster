@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
-import {AnchorRepository} from "@/modules/anchor/AnchorRepository";
-import {Anchor} from "@/modules/anchor";
+import {AnchorRepository} from "@/modules/visualization/repository/AnchorRepository";
+import {Anchor} from "@/modules/visualization";
 
 @injectable()
 export class AnchorService

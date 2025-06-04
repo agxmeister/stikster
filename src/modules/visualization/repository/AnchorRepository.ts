@@ -1,7 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Miro} from "@/miro";
-import {Anchor} from "@/modules/anchor";
 import * as fs from "node:fs";
+import {Anchor} from "@/modules/visualization";
 
 @injectable()
 export class AnchorRepository

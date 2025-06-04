@@ -10,6 +10,11 @@ export type Range = {
 export type Track = {
 }
 
+export type Anchor = {
+    id: string,
+    cursor: Cursor,
+}
+
 export type Cursor = {
     position: Position,
     size: Size,
