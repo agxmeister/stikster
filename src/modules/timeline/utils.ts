@@ -35,6 +35,16 @@ export const getNextWorkday = (day: Date): Date => {
     } while (true);
 }
 
+export const getPreviousWorkday = (day: Date): Date => {
+    let nextWorkDay = new Date(day);
+    do {
+        nextWorkDay = addDays(nextWorkDay, -1);
+        if (isWorkday(nextWorkDay)) {
+            return nextWorkDay;
+        }
+    } while (true);
+}
+
 export const getWorkdaysDiff = (start: string, end: string) =>
     eachDayOfInterval({
         start: new Date(start),

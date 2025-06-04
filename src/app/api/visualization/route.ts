@@ -1,7 +1,6 @@
 import {container} from "@/container";
-import {AnchorService} from "@/modules/anchor";
 import {TimelineService} from "@/modules/timeline";
-import {VisualizationService} from "@/modules/visualization";
+import {AnchorService, VisualizationService} from "@/modules/visualization";
 
 export async function PUT(request: Request): Promise<Response>
 {

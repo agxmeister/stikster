@@ -1,5 +1,5 @@
 import {container} from "@/container";
-import {AnchorService} from "@/modules/visualization/service/AnchorService";
+import {AnchorService} from "@/modules/visualization";
 
 export async function PUT(request: Request): Promise<Response>
 {
