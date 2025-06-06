@@ -41,6 +41,24 @@ export class AnchorRepository
         }
     }
 
+    async getList(): Promise<Anchor[]>
+    {
+        try {
+            const files = await fs.promises.readdir('./data/anchors');
+            const anchors: Anchor[] = [];
+            for (const file of files) {
+                if (file.endsWith('.json')) {
+                    const data = await fs.promises.readFile(`./data/anchors/${file}`, 'utf-8');
+                    anchors.push(JSON.parse(data) as Anchor);
+                }
+            }
+            return anchors;
+        } catch (error) {
+            console.error('Error reading anchors:', error);
+            return [];
+        }
+    }
+
     async delete(id: string): Promise<void>
     {
         await this.miro.removeStickyNote(id);
