@@ -1,5 +1,7 @@
-import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
+import {McpServer, ResourceTemplate} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StreamableHTTPServerTransport} from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import {container} from "@/container";
+import {AnchorService} from "@/modules/visualization";
 
 export const postMcpHandler = async (req: any, res: any): Promise<void> => {
     try {
@@ -7,6 +9,27 @@ export const postMcpHandler = async (req: any, res: any): Promise<void> => {
             name: "stikster",
             version: "1.0.0"
         });
+
+        const anchorService = container.get(AnchorService);
+
+        server.resource(
+            "anchor",
+            new ResourceTemplate("anchor://{label}", {
+                list: async () => ({
+                    resources: (await anchorService.getList()).map(anchor => ({
+                        uri: `anchor://${anchor.id}`,
+                        name: anchor.id,
+                    })),
+                }),
+            }),
+            async (uri, {label}) => ({
+                contents: [{
+                    uri: uri.href,
+                    text: `Anchor ${label}`
+                }]
+            })
+        );
+
         const transport: StreamableHTTPServerTransport = new StreamableHTTPServerTransport({
             sessionIdGenerator: undefined,
         });
