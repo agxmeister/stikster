@@ -1,7 +1,9 @@
 import {McpServer, ResourceTemplate} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StreamableHTTPServerTransport} from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import {z as zod} from "zod";
 import {container} from "@/container";
 import {AnchorService} from "@/modules/visualization";
+import {createAnchor} from "@/schemas/createAnchor";
 
 export const postMcpHandler = async (req: any, res: any): Promise<void> => {
     try {
@@ -28,6 +30,20 @@ export const postMcpHandler = async (req: any, res: any): Promise<void> => {
                     text: `Anchor ${label}`
                 }]
             })
+        );
+
+        server.tool(
+            "create-anchor",
+            createAnchor.shape,
+            async ({label}) => {
+                const anchor = await anchorService.create(label);
+                return {
+                    content: [{
+                        type: "text",
+                        text: anchor?.id || `Failed to create anchor with label "${label}"`,
+                    }]
+                };
+            }
         );
 
         const transport: StreamableHTTPServerTransport = new StreamableHTTPServerTransport({
