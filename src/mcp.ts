@@ -3,7 +3,8 @@ import {StreamableHTTPServerTransport} from "@modelcontextprotocol/sdk/server/st
 import {z as zod} from "zod";
 import {container} from "@/container";
 import {AnchorService} from "@/modules/visualization";
-import {createAnchor} from "@/schemas/createAnchor";
+import {createAnchor, createTimeline} from "@/schemas/createAnchor";
+import {TimelineService} from "@/modules/timeline";
 
 export const postMcpHandler = async (req: any, res: any): Promise<void> => {
     try {
@@ -13,6 +14,7 @@ export const postMcpHandler = async (req: any, res: any): Promise<void> => {
         });
 
         const anchorService = container.get(AnchorService);
+        const timelineService = container.get(TimelineService);
 
         server.resource(
             "anchor",
@@ -40,7 +42,21 @@ export const postMcpHandler = async (req: any, res: any): Promise<void> => {
                 return {
                     content: [{
                         type: "text",
-                        text: anchor?.id || `Failed to create anchor with label "${label}"`,
+                        text: anchor?.id || `Failed to create anchor ${label}`,
+                    }]
+                };
+            }
+        );
+
+        server.tool(
+            "create-timeline",
+            createTimeline.shape,
+            async ({taskIds}) => {
+                const timeline = await timelineService.create(taskIds);
+                return {
+                    content: [{
+                        type: "text",
+                        text: timeline?.id || `Failed to create timeline for tasks ${taskIds.join(", ")}`,
                     }]
                 };
             }
