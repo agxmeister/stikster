@@ -2,8 +2,8 @@ import {McpServer, ResourceTemplate} from "@modelcontextprotocol/sdk/server/mcp.
 import {StreamableHTTPServerTransport} from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import {z as zod} from "zod";
 import {container} from "@/container";
-import {AnchorService} from "@/modules/visualization";
-import {createAnchor, createTimeline} from "@/schemas/createAnchor";
+import {AnchorService, VisualizationService} from "@/modules/visualization";
+import {createAnchor, createTimeline, createVisualization} from "@/schemas/createAnchor";
 import {TimelineService} from "@/modules/timeline";
 
 export const postMcpHandler = async (req: any, res: any): Promise<void> => {
@@ -15,6 +15,7 @@ export const postMcpHandler = async (req: any, res: any): Promise<void> => {
 
         const anchorService = container.get(AnchorService);
         const timelineService = container.get(TimelineService);
+        const visualizationService = container.get(VisualizationService);
 
         server.resource(
             "anchor",
@@ -57,6 +58,22 @@ export const postMcpHandler = async (req: any, res: any): Promise<void> => {
                     content: [{
                         type: "text",
                         text: timeline?.id || `Failed to create timeline for tasks ${taskIds.join(", ")}`,
+                    }]
+                };
+            }
+        );
+
+        server.tool(
+            "create-visualization",
+            createVisualization.shape,
+            async ({timelineId, anchorId}) => {
+                const timeline = await timelineService.get(timelineId);
+                const anchor = await anchorService.get(anchorId);
+                const visualization = await visualizationService.create(timeline!, anchor!.cursor);
+                return {
+                    content: [{
+                        type: "text",
+                        text: visualization ? "Visualization has been created" : "Failed to create visualization",
                     }]
                 };
             }
