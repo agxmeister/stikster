@@ -14,6 +14,7 @@ export class AnchorRepository
         const anchor = (await this.miro.findStickyNotes([label]))
             .map((stickyNote: any) => ({
                 id: stickyNote.id,
+                label: label,
                 cursor: {
                     position: {
                         x: stickyNote.position.x,

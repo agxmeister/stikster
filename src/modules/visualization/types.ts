@@ -12,6 +12,7 @@ export type Track = {
 
 export type Anchor = {
     id: string,
+    label: string,
     cursor: Cursor,
 }
 
