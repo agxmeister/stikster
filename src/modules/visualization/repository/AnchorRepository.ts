@@ -27,14 +27,14 @@ export class AnchorRepository
                 }
             }))
             .reduce((_, anchor) => anchor);
-        await fs.promises.writeFile(`./data/anchors/${anchor.id}.json`, JSON.stringify(anchor, null, 4));
+        await fs.promises.writeFile(`${process.env.DATA_PATH}/anchors/${anchor.id}.json`, JSON.stringify(anchor, null, 4));
         return anchor;
     }
 
     async get(id: string): Promise<Anchor | null>
     {
         try {
-            const data = await fs.promises.readFile(`./data/anchors/${id}.json`, 'utf-8');
+            const data = await fs.promises.readFile(`${process.env.DATA_PATH}/anchors/${id}.json`, 'utf-8');
             return JSON.parse(data) as Anchor;
         } catch (error) {
             console.error(`Error reading anchor with id ${id}:`, error);
@@ -45,11 +45,11 @@ export class AnchorRepository
     async getList(): Promise<Anchor[]>
     {
         try {
-            const files = await fs.promises.readdir('./data/anchors');
+            const files = await fs.promises.readdir(`${process.env.DATA_PATH}/anchors`);
             const anchors: Anchor[] = [];
             for (const file of files) {
                 if (file.endsWith('.json')) {
-                    const data = await fs.promises.readFile(`./data/anchors/${file}`, 'utf-8');
+                    const data = await fs.promises.readFile(`${process.env.DATA_PATH}/anchors/${file}`, 'utf-8');
                     anchors.push(JSON.parse(data) as Anchor);
                 }
             }
@@ -64,7 +64,7 @@ export class AnchorRepository
     {
         await this.miro.removeStickyNote(id);
         try {
-            await fs.promises.unlink(`./data/anchors/${id}.json`);
+            await fs.promises.unlink(`${process.env.DATA_PATH}/anchors/${id}.json`);
         } catch (error) {
             console.error(`Error deleting anchor with id ${id}:`, error);
         }

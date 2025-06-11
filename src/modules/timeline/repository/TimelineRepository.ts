@@ -39,7 +39,7 @@ export class TimelineRepository
                 .reduce((acc, end) => end > acc ? end : acc),
         };
 
-        await fs.promises.writeFile(`./data/timelines/${timeline.id}.json`, JSON.stringify(timeline, null, 4));
+        await fs.promises.writeFile(`${process.env.DATA_PATH}/timelines/${timeline.id}.json`, JSON.stringify(timeline, null, 4));
 
         return timeline;
     }
@@ -47,7 +47,7 @@ export class TimelineRepository
     async get(id: string): Promise<Timeline | null>
     {
         try {
-            const data = await fs.promises.readFile(`./data/timelines/${id}.json`, 'utf-8');
+            const data = await fs.promises.readFile(`${process.env.DATA_PATH}/timelines/${id}.json`, 'utf-8');
             return JSON.parse(data);
         } catch (error) {
             return null;
