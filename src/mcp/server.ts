@@ -2,7 +2,7 @@ import {McpServer, ResourceTemplate} from "@modelcontextprotocol/sdk/server/mcp.
 import {container} from "@/container";
 import {AnchorService, VisualizationService} from "@/modules/visualization";
 import {TimelineService} from "@/modules/timeline";
-import {createAnchor, createTimeline, createVisualization} from "@/schemas/createAnchor";
+import {createAnchor, createTimeline, createVisualization, getAnchor} from "@/schemas/createAnchor";
 
 export const getServer = () => {
     const server = new McpServer({
@@ -44,6 +44,20 @@ export const getServer = () => {
                 content: [{
                     type: "text",
                     text: anchor?.id || `Failed to create anchor ${label}`,
+                }]
+            };
+        }
+    );
+
+    server.tool(
+        "get-anchor",
+        getAnchor.shape,
+        async ({id}) => {
+            const anchor = await anchorService.get(id);
+            return {
+                content: [{
+                    type: "text",
+                    text: anchor ? `Anchor with id ${anchor.id} has label ${anchor.label}.` : `Anchor with id ${id} not found.`,
                 }]
             };
         }

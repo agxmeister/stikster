@@ -4,6 +4,10 @@ export const createAnchor = zod.object({
     label: zod.string(),
 });
 
+export const getAnchor = zod.object({
+    id: zod.string(),
+});
+
 export const createTimeline = zod.object({
     taskIds: zod.array(zod.string()),
 });
