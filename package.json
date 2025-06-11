@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "nodemon": "nodemon",
+    "stdio": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ./src/stdio.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
