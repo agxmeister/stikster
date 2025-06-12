@@ -2,7 +2,8 @@ import {McpServer, ResourceTemplate} from "@modelcontextprotocol/sdk/server/mcp.
 import {container} from "@/container";
 import {AnchorService, VisualizationService} from "@/modules/visualization";
 import {TimelineService} from "@/modules/timeline";
-import {createAnchor, createTimeline, createVisualization, getAnchor} from "@/schemas/createAnchor";
+import {getAnchor, createAnchor, createVisualization} from "@/modules/visualization/schemas";
+import {createTimeline, getTimeline} from "@/modules/timeline/schemas";
 
 export const getServer = () => {
     const server = new McpServer({
@@ -38,12 +39,12 @@ export const getServer = () => {
     server.tool(
         "create-anchor",
         createAnchor.shape,
-        async ({label}) => {
-            const anchor = await anchorService.create(label);
+        async ({anchorLabel}) => {
+            const anchor = await anchorService.create(anchorLabel);
             return {
                 content: [{
                     type: "text",
-                    text: anchor?.id || `Failed to create anchor ${label}`,
+                    text: anchor?.id || `Failed to create anchor ${anchorLabel}`,
                 }]
             };
         }
@@ -52,12 +53,26 @@ export const getServer = () => {
     server.tool(
         "get-anchor",
         getAnchor.shape,
-        async ({id}) => {
-            const anchor = await anchorService.get(id);
+        async ({anchorId}) => {
+            const anchor = await anchorService.get(anchorId);
             return {
                 content: [{
                     type: "text",
-                    text: anchor ? `Anchor with id ${anchor.id} has label ${anchor.label}.` : `Anchor with id ${id} not found.`,
+                    text: anchor ? `Anchor with id ${anchor.id} has label ${anchor.label}.` : `Anchor with id ${anchorId} not found.`,
+                }]
+            };
+        }
+    );
+
+    server.tool(
+        "get-timeline",
+        getTimeline.shape,
+        async ({timelineId}) => {
+            const timeline = await timelineService.get(timelineId);
+            return {
+                content: [{
+                    type: "text",
+                    text: timeline ? `Timeline with id ${timeline.id}` : `Timeline with id ${timeline} not found.`,
                 }]
             };
         }
