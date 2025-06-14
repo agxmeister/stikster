@@ -1,14 +1,14 @@
 import {z as zod} from "zod";
 
 export const createAnchor = zod.object({
-    anchorLabel: zod.string().describe("Label is a text on a sticky note to look for. It should be unique, if possible, and descriptive enough to distinguish it from others."),
+    anchorLabel: zod.string().describe("A text on a sticky note to create an anchor for."),
 });
 
 export const getAnchor = zod.object({
-    anchorId: zod.string().describe("Anchor ID is a unique identifier for the anchor object, which describes a sticky note on a Miro board. It includes the sticky note's identity, position, and dimensions."),
+    anchorId: zod.string().describe("Unique identifier of an anchor."),
 });
 
 export const createVisualization = zod.object({
-    timelineId: zod.string().describe("Timeline ID is a unique identifier for the timeline object, which is a collection of tasks grouped together for visualization purposes."),
-    anchorId: zod.string().describe("Anchor ID is a unique identifier for the anchor object, which describes a sticky note on a Miro board. It includes the sticky note's identity, position, and dimensions."),
+    timelineId: zod.string().describe("Unique identifier of a timeline."),
+    anchorId: zod.string().describe("Unique identifier of an anchor."),
 });

@@ -1,9 +1,11 @@
+import {z as zod} from "zod";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {container} from "@/container";
 import {AnchorService, VisualizationService} from "@/modules/visualization";
 import {TimelineService} from "@/modules/timeline";
 import {getAnchor, createAnchor, createVisualization} from "@/modules/visualization/schemas";
 import {createTimeline, getTimeline} from "@/modules/timeline/schemas";
+import {howToUse} from "@/mcp/descriptions";
 
 export const getServer = () => {
     const server = new McpServer({
@@ -16,8 +18,21 @@ export const getServer = () => {
     const visualizationService = container.get(VisualizationService);
 
     server.tool(
+        "how-to-use",
+        "Provides the manual on how to visualize the tasks' lifecycle.",
+        zod.object({}).shape,
+        async () => {
+            return {
+                content: [{
+                    type: "text",
+                    text: howToUse,
+                }],
+            };
+        }
+    );
+
+    server.tool(
         "create-anchor",
-        "This tool creates a new anchor - the object that describes the sticky note on a Miro board. An anchor includes the sticky note's identity, position, and dimensions. The tool searches for a sticky note with the given text to create an anchor. If a proper sticky note is found, the anchor object is created.",
         createAnchor.shape,
         async ({anchorLabel}) => {
             const anchor = await anchorService.create(anchorLabel);
@@ -33,7 +48,6 @@ export const getServer = () => {
 
     server.tool(
         "get-anchor",
-        "This tool retrieves an anchor by its identity. An anchor is an object that describes the sticky note on a Miro board, including its position and dimensions.",
         getAnchor.shape,
         async ({anchorId}) => {
             const anchor = await anchorService.get(anchorId);
@@ -49,7 +63,6 @@ export const getServer = () => {
 
     server.tool(
         "create-timeline",
-        "This tool creates a new timeline for the given tasks. A timeline is a collection of tasks that are grouped together for visualization purposes.",
         createTimeline.shape,
         async ({taskIds}) => {
             const timeline = await timelineService.create(taskIds);
@@ -65,7 +78,6 @@ export const getServer = () => {
 
     server.tool(
         "get-timeline",
-        "This tool retrieves a timeline by its identity. A timeline is a collection of tasks that are grouped together for visualization purposes.",
         getTimeline.shape,
         async ({timelineId}) => {
             const timeline = await timelineService.get(timelineId);
@@ -81,7 +93,6 @@ export const getServer = () => {
 
     server.tool(
         "create-visualization",
-        "This tool creates a new visualization for the given timeline and anchor. A visualization is an object that represents the timeline and anchor on a Miro board.",
         createVisualization.shape,
         async ({timelineId, anchorId}) => {
             const timeline = await timelineService.get(timelineId);
