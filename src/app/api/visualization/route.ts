@@ -15,7 +15,7 @@ export async function PUT(request: Request): Promise<Response>
     const visualizationService = container.get(VisualizationService);
     const visualization = await visualizationService.create(timeline!, anchor!.cursor);
 
-    await anchorService.delete(anchor!.id);
+    await anchorService.delete(anchor!.cursor.boardId, anchor!.id);
 
     return Response.json(visualization);
 }

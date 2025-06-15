@@ -17,6 +17,7 @@ export type Anchor = {
 }
 
 export type Cursor = {
+    boardId: string,
     position: Position,
     size: Size,
 }

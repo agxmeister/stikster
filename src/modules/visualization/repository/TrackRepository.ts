@@ -20,6 +20,7 @@ export class TrackRepository
         let workDay = getWorkday(range.begin, 0);
         for (let i = 0; i < wordDaysCount; i++) {
             const leaf = await this.miro.addStickyNote(
+                cursor.boardId,
                 format(workDay, 'MMM dd'),
                 'gray',
                 cursor.position.x + (i * cursor.size.width),
@@ -39,6 +40,7 @@ export class TrackRepository
 
         for (let i = 0; i < task.length; i++) {
             const leaf = await this.miro.addStickyNote(
+                cursor.boardId,
                 task.summary,
                 getColor(task, i),
                 cursor.position.x + (i * cursor.size.width),
@@ -51,8 +53,8 @@ export class TrackRepository
         return [track, moveCursor(cursor, 0, task.length)];
     }
 
-    async find(labels: string[]): Promise<any[]>
+    async find(boardId: string, labels: string[]): Promise<any[]>
     {
-        return await this.miro.findStickyNotes(labels);
+        return await this.miro.findStickyNotes(boardId, labels);
     }
 }

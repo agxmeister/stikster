@@ -31,7 +31,6 @@ container.bind(Jira).toDynamicValue(() => new Jira(
 container.bind(Miro).toDynamicValue(() => new Miro(
     process.env.MIRO_URL!,
     process.env.MIRO_TOKEN!,
-    process.env.MIRO_BOARD!,
 ));
 
 export {container}

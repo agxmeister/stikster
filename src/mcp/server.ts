@@ -34,8 +34,8 @@ export const getServer = () => {
     server.tool(
         "create-anchor",
         createAnchor.shape,
-        async ({anchorLabel}) => {
-            const anchor = await anchorService.create(anchorLabel);
+        async ({boardId, anchorLabel}) => {
+            const anchor = await anchorService.create(boardId, anchorLabel);
             return {
                 content: [{
                     type: "text",

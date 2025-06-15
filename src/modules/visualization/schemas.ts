@@ -1,6 +1,7 @@
 import {z as zod} from "zod";
 
 export const createAnchor = zod.object({
+    boardId: zod.string().describe("A unique identifier of a Miro board to look for the sticky note."),
     anchorLabel: zod.string().describe("A text on a sticky note to create an anchor for."),
 });
 

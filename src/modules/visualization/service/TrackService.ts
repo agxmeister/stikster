@@ -11,9 +11,9 @@ export class TrackService
     {
     }
 
-    async find(labels: string[]): Promise<any[]>
+    async find(boardId: string, labels: string[]): Promise<any[]>
     {
-        return await this.trackRepository.find(labels);
+        return await this.trackRepository.find(boardId, labels);
     }
 
     async createTrackByRange(range: Range, cursor: Cursor): Promise<[Track, Cursor]>

@@ -3,13 +3,13 @@ import {injectable} from "inversify";
 @injectable()
 export class Miro
 {
-    constructor(readonly url: string, readonly token: string, readonly board: string)
+    constructor(readonly url: string, readonly token: string)
     {
     }
 
-    async addStickyNote(content: string, color: string, x: number = 0, y: number = 0, width: number = 100): Promise<any>
+    async addStickyNote(boardId: string, content: string, color: string, x: number = 0, y: number = 0, width: number = 100): Promise<any>
     {
-        const response = await fetch(`${this.url}/boards/${this.board}/sticky_notes`, {
+        const response = await fetch(`${this.url}/boards/${boardId}/sticky_notes`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -38,9 +38,9 @@ export class Miro
         return await response.json()
     }
 
-    async removeStickyNote(id: string): Promise<void>
+    async removeStickyNote(boardId: string, id: string): Promise<void>
     {
-        await fetch(`${this.url}/boards/${this.board}/sticky_notes/${id}`, {
+        await fetch(`${this.url}/boards/${boardId}/sticky_notes/${id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -49,13 +49,13 @@ export class Miro
         });
     }
 
-    async findStickyNotes(labels: string[]): Promise<any[]>
+    async findStickyNotes(boardId: string, labels: string[]): Promise<any[]>
     {
         const result: any[] = [];
 
         let cursor = null;
         do {
-            const response: Response = await fetch(`${this.url}/boards/${this.board}/items?type=sticky_note&limit=50&cursor=${cursor ?? ""}`, {
+            const response: Response = await fetch(`${this.url}/boards/${boardId}/items?type=sticky_note&limit=50&cursor=${cursor ?? ""}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',

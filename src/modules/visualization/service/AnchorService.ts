@@ -9,9 +9,9 @@ export class AnchorService
     {
     }
 
-    async create(label: string): Promise<Anchor | null>
+    async create(boardId: string, label: string): Promise<Anchor | null>
     {
-        return await this.anchorRepository.create(label);
+        return await this.anchorRepository.create(boardId, label);
     }
 
     async get(id: string): Promise<Anchor | null>
@@ -24,8 +24,8 @@ export class AnchorService
         return await this.anchorRepository.getList();
     }
 
-    async delete(id: string): Promise<void>
+    async delete(boardId: string, anchorId: string): Promise<void>
     {
-        await this.anchorRepository.delete(id);
+        await this.anchorRepository.delete(boardId, anchorId);
     }
 }

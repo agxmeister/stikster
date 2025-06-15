@@ -10,12 +10,13 @@ export class AnchorRepository
     {
     }
 
-    async create(label: string): Promise<Anchor | null> {
-        const anchor = (await this.miro.findStickyNotes([label]))
+    async create(boardId: string, label: string): Promise<Anchor | null> {
+        const anchor = (await this.miro.findStickyNotes(boardId, [label]))
             .map((stickyNote: any) => ({
                 id: stickyNote.id,
                 label: label,
                 cursor: {
+                    boardId: boardId,
                     position: {
                         x: stickyNote.position.x,
                         y: stickyNote.position.y,
@@ -60,9 +61,9 @@ export class AnchorRepository
         }
     }
 
-    async delete(id: string): Promise<void>
+    async delete(boardId: string, id: string): Promise<void>
     {
-        await this.miro.removeStickyNote(id);
+        await this.miro.removeStickyNote(boardId, id);
         try {
             await fs.promises.unlink(`${process.env.DATA_PATH}/anchors/${id}.json`);
         } catch (error) {
