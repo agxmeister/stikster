@@ -1,6 +1,6 @@
 import express from 'express';
 import next from 'next';
-import {getMcpHandler, postMcpHandler, deleteMcpHandler} from "./mcp";
+import {getMcpHandler, postMcpHandler, deleteMcpHandler} from "./mcp/handlers";
 
 const port = parseInt(process.env.PORT || '3000', 10);
 
