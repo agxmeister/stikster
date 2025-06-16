@@ -33,6 +33,7 @@ export const getServer = () => {
 
     server.tool(
         "create-anchor",
+        "Creates an anchor pointing to a sticky note with a given label.",
         createAnchor.shape,
         async ({boardId, anchorLabel}) => {
             const anchor = await anchorService.create(boardId, anchorLabel);
@@ -48,6 +49,7 @@ export const getServer = () => {
 
     server.tool(
         "get-anchor",
+        "Retrieves an anchor by its identity.",
         getAnchor.shape,
         async ({anchorId}) => {
             const anchor = await anchorService.get(anchorId);
@@ -63,6 +65,7 @@ export const getServer = () => {
 
     server.tool(
         "create-timeline",
+        "Creates a timeline for a set of tasks.",
         createTimeline.shape,
         async ({taskIds}) => {
             const timeline = await timelineService.create(taskIds);
@@ -78,6 +81,7 @@ export const getServer = () => {
 
     server.tool(
         "get-timeline",
+        "Retrieves a timeline by its identity.",
         getTimeline.shape,
         async ({timelineId}) => {
             const timeline = await timelineService.get(timelineId);
@@ -93,6 +97,7 @@ export const getServer = () => {
 
     server.tool(
         "create-visualization",
+        "Creates a visualization for a timeline at a specific anchor.",
         createVisualization.shape,
         async ({timelineId, anchorId}) => {
             const timeline = await timelineService.get(timelineId);
