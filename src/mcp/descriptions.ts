@@ -6,11 +6,13 @@ you need to follow these steps:
     -   Create an anchor with given label: the JSON representation on the existing sticky note on a Miro board,
         that defines the spot on the board to put the visualization of the timeline.
     -   Create a visualization: the representation of the timeline on a Miro board.
+    -   Delete the anchor create earlier.
     
 There are the tools available for this purpose:
     -   create-anchor: creates an anchor. The anchor includes the sticky note's identity, position, and dimensions.
         This tool searches for a sticky note with the given label. If a proper sticky note is found,
         the anchor will be created.
+    -   delete-anchor: deletes an anchor by its identity.
     -   get-anchor: retrieves an anchor by its identity.
     -   create-timeline: creates a timeline for the given tasks.
     -   get-timeline: retrieves a timeline by its identity.

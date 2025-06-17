@@ -48,6 +48,30 @@ export const getServer = () => {
     );
 
     server.tool(
+        "delete-anchor",
+        "Deletes an anchor by its identity.",
+        zod.object({anchorId: zod.string()}).shape,
+        async ({anchorId}) => {
+            const anchor = await anchorService.get(anchorId);
+            if (!anchor) {
+                return {
+                    content: [{
+                        type: "text",
+                        text: `The anchor ${anchorId} does not exist or has already been removed`,
+                    }],
+                };
+            }
+            await anchorService.delete(anchor?.cursor.boardId, anchor?.id);
+            return {
+                content: [{
+                    type: "text",
+                    text: `The anchor ${anchorId} has been removed`,
+                }],
+            };
+        }
+    )
+
+    server.tool(
         "get-anchor",
         "Retrieves an anchor by its identity.",
         getAnchor.shape,
