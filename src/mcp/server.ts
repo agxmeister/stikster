@@ -20,7 +20,6 @@ export const getServer = () => {
     server.tool(
         "how-to-use",
         "Provides the manual on how to visualize the tasks' lifecycle.",
-        zod.object({}).shape,
         async () => {
             return {
                 content: [{
