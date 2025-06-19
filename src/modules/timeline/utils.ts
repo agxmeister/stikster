@@ -7,8 +7,8 @@ export const holidays = [
 ];
 
 export const refineJiraData = (data: any): Task => {
-    const started = data.intervals.length > 0 ? data.intervals[0].start : new Date();
-    const completed = data.intervals.length > 0 ? data.intervals[data.intervals.length - 1].end : new Date();
+    const started = data.intervals.length > 0 ? data.intervals[0].start : (new Date()).toISOString();
+    const completed = data.intervals.length > 0 ? data.intervals[data.intervals.length - 1].end : (new Date()).toISOString();
     return {
         ...data,
         started: started,

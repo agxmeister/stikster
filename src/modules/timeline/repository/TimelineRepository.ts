@@ -13,17 +13,19 @@ export class TimelineRepository
 
     async create(taskIds: string[]): Promise<Timeline>
     {
+        const now = (new Date()).toISOString();
+
         const branches = [];
         for (const taskId of taskIds) {
             const tasks = await this.taskService.findByFootprint(taskId);
             branches.push({
                 footprint: taskId,
-                begin: tasks
+                begin: tasks.length > 0 ? tasks
                     .map(task => task.started)
-                    .reduce((acc, begin) => begin < acc ? begin : acc),
-                end: tasks
+                    .reduce((acc, begin) => begin < acc ? begin : acc) : now,
+                end: tasks.length > 0 ? tasks
                     .map(task => task.completed)
-                    .reduce((acc, end) => end > acc ? end : acc),
+                    .reduce((acc, end) => end > acc ? end : acc) : now,
                 tasks: tasks,
             });
         }
@@ -31,12 +33,12 @@ export class TimelineRepository
         const timeline = {
             id: uuid(),
             branches: branches,
-            begin: branches
+            begin: branches.length > 0 ? branches
                 .map(branch => branch.begin)
-                .reduce((acc, begin) => begin < acc ? begin : acc),
-            end: branches
+                .reduce((acc, begin) => begin < acc ? begin : acc): now,
+            end: branches.length > 0 ? branches
                 .map(branch => branch.end)
-                .reduce((acc, end) => end > acc ? end : acc),
+                .reduce((acc, end) => end > acc ? end : acc): now,
         };
 
         await fs.promises.writeFile(`${process.env.DATA_PATH}/timelines/${timeline.id}.json`, JSON.stringify(timeline, null, 4));

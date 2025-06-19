@@ -36,6 +36,10 @@ export class Jira
             });
             const data = await response.json();
 
+            if (!data.issues) {
+                return [];
+            }
+
             const statuses = await this.getStatuses();
             const tasks = data.issues.map((issue: any) => {
                 return {
