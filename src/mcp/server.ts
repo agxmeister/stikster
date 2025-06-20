@@ -19,7 +19,7 @@ export const getServer = () => {
 
     server.tool(
         "how-to-use",
-        "Provides the manual on how to visualize the tasks' lifecycle.",
+        "Provides comprehensive instructions on how to visualize the tasks' lifecycle.",
         async () => {
             return {
                 content: [{
@@ -32,7 +32,7 @@ export const getServer = () => {
 
     server.tool(
         "create-anchor",
-        "Creates an anchor pointing to a sticky note with a given label.",
+        "Creates an anchor pointing to a sticky note with a given label. Important: read the how-to before use.",
         createAnchor.shape,
         async ({boardId, anchorLabel}) => {
             const anchor = await anchorService.create(boardId, anchorLabel);
@@ -48,7 +48,7 @@ export const getServer = () => {
 
     server.tool(
         "delete-anchor",
-        "Deletes an anchor by its identity.",
+        "Deletes an anchor by its identity. Important: read the how-to before use.",
         zod.object({anchorId: zod.string()}).shape,
         async ({anchorId}) => {
             const anchor = await anchorService.get(anchorId);
@@ -72,7 +72,7 @@ export const getServer = () => {
 
     server.tool(
         "get-anchor",
-        "Retrieves an anchor by its identity.",
+        "Retrieves an anchor by its identity. Important: read the how-to before use.",
         getAnchor.shape,
         async ({anchorId}) => {
             const anchor = await anchorService.get(anchorId);
@@ -88,7 +88,7 @@ export const getServer = () => {
 
     server.tool(
         "create-timeline",
-        "Creates a timeline for a set of tasks.",
+        "Creates a timeline for a set of tasks. Important: read the how-to before use.",
         createTimeline.shape,
         async ({taskIds}) => {
             const timeline = await timelineService.create(taskIds);
@@ -104,7 +104,7 @@ export const getServer = () => {
 
     server.tool(
         "get-timeline",
-        "Retrieves a timeline by its identity.",
+        "Retrieves a timeline by its identity. Important: read the how-to before use.",
         getTimeline.shape,
         async ({timelineId}) => {
             const timeline = await timelineService.get(timelineId);
@@ -120,7 +120,7 @@ export const getServer = () => {
 
     server.tool(
         "create-visualization",
-        "Creates a visualization for a timeline at a specific anchor.",
+        "Creates a visualization for a timeline at a specific anchor. Important: read the how-to before use.",
         createVisualization.shape,
         async ({timelineId, anchorId}) => {
             const timeline = await timelineService.get(timelineId);
