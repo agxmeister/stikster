@@ -1,4 +1,5 @@
 export type Visualization = {
+    id: string,
     tracks: Track[],
 }
 

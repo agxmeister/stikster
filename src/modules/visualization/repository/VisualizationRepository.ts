@@ -2,6 +2,8 @@ import {inject, injectable} from "inversify";
 import {Timeline} from "@/modules/timeline";
 import {TrackService} from "@/modules/visualization/service/TrackService";
 import {Visualization, Track, Cursor} from "@/modules/visualization";
+import fs from "node:fs";
+import {v4 as uuid} from "uuid";
 
 @injectable()
 export class VisualizationRepository
@@ -30,8 +32,14 @@ export class VisualizationRepository
             tracks.push(newTracks);
             currentCursor = newCursor;
         }
-        return {
+
+        const visualization = {
+            id: uuid(),
             tracks: tracks,
-        };
+        }
+
+        await fs.promises.writeFile(`${process.env.DATA_PATH}/visualizations/${visualization.id}.json`, JSON.stringify(visualization, null, 4));
+
+        return visualization;
     }
 }

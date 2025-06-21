@@ -7,6 +7,8 @@
 !/data/anchors/.gitkeep
 /data/timelines/*
 !/data/timelines/.gitkeep
+/data/visualizations/*
+!/data/visualizations/.gitkeep
 
 # misc
 .DS_Store
