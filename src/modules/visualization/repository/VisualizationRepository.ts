@@ -15,9 +15,12 @@ export class VisualizationRepository
     async create(timeline: Timeline, cursor: Cursor): Promise<Visualization>
     {
         const tracks = [] as Track[];
-        let currentCursor = cursor;
 
-        const [newTracks, newCursor] = await this.trackService.createTrackByRange({
+        let currentCursor = cursor;
+        let newTracks;
+        let newCursor;
+
+        [newTracks, newCursor] = await this.trackService.createTrackByRange({
             begin: timeline.begin,
             end: timeline.end,
         }, currentCursor);
@@ -25,13 +28,19 @@ export class VisualizationRepository
         currentCursor = newCursor;
 
         for (const branch of timeline.branches) {
-            const [newTracks, newCursor] = await this.trackService.createTracksByTasks(branch.tasks, currentCursor, {
+            [newTracks, newCursor] = await this.trackService.createTracksByTasks(branch.tasks, currentCursor, {
                 begin: timeline.begin,
                 end: timeline.end,
             });
             tracks.push(newTracks);
             currentCursor = newCursor;
         }
+
+        [newTracks] = await this.trackService.createTrackByRange({
+            begin: timeline.begin,
+            end: timeline.end,
+        }, currentCursor);
+        tracks.push(newTracks);
 
         const visualization = {
             id: uuid(),
