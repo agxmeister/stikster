@@ -41,7 +41,7 @@ export class TrackRepository
         for (let i = 0; i < task.length; i++) {
             const leaf = await this.miro.addStickyNote(
                 cursor.boardId,
-                task.summary,
+                `<a href="${task.url}" target="_blank">${task.key}</a><br/>${task.summary}`,
                 getColor(task, i),
                 cursor.position.x + (i * cursor.size.width),
                 cursor.position.y,

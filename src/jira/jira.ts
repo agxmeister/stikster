@@ -10,7 +10,7 @@ export class Jira
 
     async getStatuses(): Promise<any>
     {
-        const response = await fetch(`${this.url}/status`, {
+        const response = await fetch(`${this.url}/rest/api/2/status`, {
             method: "GET",
             headers: this.getHeaders(),
         });
@@ -20,7 +20,7 @@ export class Jira
     async search(jql: string): Promise<any>
     {
         const fetchAll = async (nextPageToken: string|null = null): Promise<any> => {
-            const response = await fetch(`${this.url}/search/jql`, {
+            const response = await fetch(`${this.url}/rest/api/2/search/jql`, {
                 method: "POST",
                 headers: this.getHeaders(),
                 body: JSON.stringify({
@@ -46,6 +46,7 @@ export class Jira
                     key: issue.key,
                     type: issue.fields.issuetype.name,
                     summary: issue.fields.summary,
+                    url: `${this.url}/browse/${issue.key}`,
                     intervals: getIntervals(
                         getStatusChanges(issue),
                         statuses

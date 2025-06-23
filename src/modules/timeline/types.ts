@@ -16,6 +16,7 @@ export type Task = {
     key: string;
     type: string;
     summary: string;
+    url: string,
     intervals: Interval[];
     started: string;
     completed: string;
