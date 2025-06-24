@@ -29,6 +29,7 @@ export class Jira
                         "key",
                         "summary",
                         "issuetype",
+                        "aggregatetimespent",
                     ],
                     expand: "changelog",
                     nextPageToken: nextPageToken,
@@ -46,6 +47,7 @@ export class Jira
                     key: issue.key,
                     type: issue.fields.issuetype.name,
                     summary: issue.fields.summary,
+                    cost: issue.fields.aggregatetimespent,
                     url: `${this.url}/browse/${issue.key}`,
                     intervals: getIntervals(
                         getStatusChanges(issue),

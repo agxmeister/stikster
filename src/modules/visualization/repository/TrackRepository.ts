@@ -38,6 +38,19 @@ export class TrackRepository
     {
         const track = [];
 
+        if (["Story", "Custom Activity"].includes(task.type)) {
+            const infoCursor = moveCursor(cursor, -1, 0);
+            const cost = task.cost / 3600 * 100;
+            const infoLeaf = await this.miro.addStickyNote(
+                infoCursor.boardId,
+                `Cost: <b>€${cost}</b><br/>Duration: <b>${task.length} days</b>`,
+                'gray',
+                infoCursor.position.x,
+                infoCursor.position.y,
+                infoCursor.size.width
+            );
+        }
+
         for (let i = 0; i < task.length; i++) {
             const leaf = await this.miro.addStickyNote(
                 cursor.boardId,
