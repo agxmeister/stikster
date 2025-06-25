@@ -28,7 +28,7 @@ export class VisualizationRepository
         currentCursor = newCursor;
 
         for (const branch of timeline.branches) {
-            [newTracks, newCursor] = await this.trackService.createTracksByTasks(branch.tasks, currentCursor, {
+            [newTracks, newCursor] = await this.trackService.createTracksByTasks(branch.tasks, branch.footprint, currentCursor, {
                 begin: timeline.begin,
                 end: timeline.end,
             });
