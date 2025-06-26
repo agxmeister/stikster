@@ -15,7 +15,7 @@ export const getColor = (task: Task, indent: number): color => {
 
     return match(task)
         .with({type: 'Story'}, (): color => 'yellow')
-        .with({type: 'Custom Activity'}, (): color => 'yellow')
+        .with({type: 'Custom Activity'}, (): color => 'orange')
         .with({type: 'Dev Sub-task'}, (): color => 'violet')
         .with({type: 'Dev MetaCloud Sub-task'}, (): color => 'violet')
         .with({type: 'QA Sub-task'}, (): color => 'light_pink')
