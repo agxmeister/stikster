@@ -1,6 +1,6 @@
 import {Container} from "inversify";
-import {Jira} from "@/jira/jira";
-import {Miro} from "@/miro";
+import {Jira} from "@/integrations/jira/jira";
+import {Miro} from "@/integrations/miro/miro";
 import {TimelineRepository, TimelineService, TaskRepository, TaskService} from "@/modules/timeline";
 import {
     VisualizationRepository,

@@ -1,5 +1,5 @@
 import {injectable} from "inversify";
-import {getDateCompleted, getDateStarted, getIntervals, getStatusChanges} from "@/jira/utils";
+import {getDateCompleted, getDateStarted, getIntervals, getStatusChanges} from "@/integrations/jira/utils";
 
 @injectable()
 export class Jira

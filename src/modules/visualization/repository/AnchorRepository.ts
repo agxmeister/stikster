@@ -1,5 +1,5 @@
 import {inject, injectable} from "inversify";
-import {Miro} from "@/miro";
+import {Miro} from "@/integrations/miro/miro";
 import * as fs from "node:fs";
 import {Anchor} from "@/modules/visualization";
 

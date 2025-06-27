@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
 import {format} from "date-fns";
-import {Miro} from "@/miro";
+import {Miro} from "@/integrations/miro/miro";
 import {Track, Cursor, Range, getColor, moveCursor} from "@/modules/visualization";
 import {getNextWorkday, getWorkday, getWorkdaysDiff} from "@/modules/timeline/utils";
 import {Task} from "@/modules/timeline";
