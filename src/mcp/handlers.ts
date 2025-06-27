@@ -1,5 +1,5 @@
 import {StreamableHTTPServerTransport} from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import {getServer} from "@/mcp/server";
+import {getServer} from "@/mcp/utils";
 
 export const postMcpHandler = async (req: any, res: any): Promise<void> => {
     try {
