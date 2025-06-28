@@ -1,7 +1,8 @@
 import {inject, injectable} from "inversify";
 import {format} from "date-fns";
+import {v4 as uuid} from "uuid";
 import {Miro} from "@/integrations/miro/miro";
-import {Track, Cursor, Range, getColor, moveCursor} from "@/modules/visualization";
+import {Track, Leaf, Cursor, Range, getColor, moveCursor} from "@/modules/visualization";
 import {getNextWorkday, getWorkday, getWorkdaysDiff} from "@/modules/timeline/utils";
 import {Task} from "@/modules/timeline";
 
@@ -14,7 +15,10 @@ export class TrackRepository
 
     async createByRange(range: Range, cursor: Cursor): Promise<[Track, Cursor]>
     {
-        const track = [];
+        const track = {
+            id: uuid(),
+            leaves: [] as Leaf[],
+        };
 
         const wordDaysCount = getWorkdaysDiff(range.begin, range.end);
         let workDay = getWorkday(range.begin, 0);
@@ -27,7 +31,9 @@ export class TrackRepository
                 cursor.position.y,
                 cursor.size.width
             );
-            track.push(leaf);
+            track.leaves.push({
+                id: leaf.id,
+            });
             workDay = getNextWorkday(workDay);
         }
 
@@ -36,12 +42,15 @@ export class TrackRepository
 
     async createByTask(task: Task, cursor: Cursor): Promise<[Track, Cursor]>
     {
-        const track = [];
+        const track = {
+            id: uuid(),
+            leaves: [] as Leaf[],
+        };
 
         if (["Story", "Custom Activity"].includes(task.type)) {
             const infoCursor = moveCursor(cursor, -1, 0);
             const cost = task.cost / 3600 * 100;
-            const infoLeaf = await this.miro.addStickyNote(
+            const leaf = await this.miro.addStickyNote(
                 infoCursor.boardId,
                 `Cost: <b>€${cost}</b><br/>Duration: <b>${task.length} days</b>`,
                 'gray',
@@ -49,6 +58,9 @@ export class TrackRepository
                 infoCursor.position.y,
                 infoCursor.size.width
             );
+            track.leaves.push({
+                id: leaf.id,
+            });
         }
 
         for (let i = 0; i < task.length; i++) {
@@ -60,7 +72,9 @@ export class TrackRepository
                 cursor.position.y,
                 cursor.size.width
             );
-            track.push(leaf);
+            track.leaves.push({
+                id: leaf.id,
+            });
         }
 
         return [track, moveCursor(cursor, 0, task.length)];

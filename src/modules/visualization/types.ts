@@ -9,6 +9,12 @@ export type Range = {
 }
 
 export type Track = {
+    id: string,
+    leaves: Leaf[],
+}
+
+export type Leaf = {
+    id: string,
 }
 
 export type Anchor = {

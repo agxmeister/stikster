@@ -5,4 +5,4 @@ export {TrackService} from "./service/TrackService";
 export {AnchorRepository} from "./repository/AnchorRepository";
 export {AnchorService} from "./service/AnchorService";
 export {getColor, isInProgress, moveCursor} from "./utils"
-export type {Visualization, Range, Track, Anchor, Cursor, Position, Size} from "./types";
+export type {Visualization, Range, Track, Leaf, Anchor, Cursor, Position, Size} from "./types";
