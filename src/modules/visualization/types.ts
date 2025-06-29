@@ -15,6 +15,7 @@ export type Track = {
 
 export type Leaf = {
     id: string,
+    cursor: Cursor,
 }
 
 export type Anchor = {

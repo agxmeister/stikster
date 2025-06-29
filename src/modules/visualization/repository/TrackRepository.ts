@@ -5,6 +5,7 @@ import {Miro} from "@/integrations/miro/miro";
 import {Track, Leaf, Cursor, Range, getColor, moveCursor} from "@/modules/visualization";
 import {getNextWorkday, getWorkday, getWorkdaysDiff} from "@/modules/timeline/utils";
 import {Task} from "@/modules/timeline";
+import {copyCursor} from "@/modules/visualization/utils";
 
 @injectable()
 export class TrackRepository
@@ -23,16 +24,18 @@ export class TrackRepository
         const wordDaysCount = getWorkdaysDiff(range.begin, range.end);
         let workDay = getWorkday(range.begin, 0);
         for (let i = 0; i < wordDaysCount; i++) {
+            const currentCursor = moveCursor(cursor, i, 0);
             const leaf = await this.miro.addStickyNote(
-                cursor.boardId,
+                currentCursor.boardId,
                 format(workDay, 'MMM dd'),
                 'gray',
-                cursor.position.x + (i * cursor.size.width),
-                cursor.position.y,
-                cursor.size.width
+                currentCursor.position.x,
+                currentCursor.position.y,
+                currentCursor.size.width
             );
             track.leaves.push({
                 id: leaf.id,
+                cursor: copyCursor(currentCursor),
             });
             workDay = getNextWorkday(workDay);
         }
@@ -60,20 +63,23 @@ export class TrackRepository
             );
             track.leaves.push({
                 id: leaf.id,
+                cursor: copyCursor(infoCursor),
             });
         }
 
         for (let i = 0; i < task.length; i++) {
+            const currentCursor = moveCursor(cursor, i, 0);
             const leaf = await this.miro.addStickyNote(
-                cursor.boardId,
+                currentCursor.boardId,
                 `<a href="${task.url}" target="_blank">${task.key}</a><br/>${task.summary}`,
                 getColor(task, i),
-                cursor.position.x + (i * cursor.size.width),
-                cursor.position.y,
-                cursor.size.width
+                currentCursor.position.x,
+                currentCursor.position.y,
+                currentCursor.size.width
             );
             track.leaves.push({
                 id: leaf.id,
+                cursor: copyCursor(currentCursor),
             });
         }
 

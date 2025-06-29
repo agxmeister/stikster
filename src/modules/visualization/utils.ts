@@ -31,10 +31,20 @@ export const isInProgress = (task: Task, indent: number) =>
             end: endOfDay(new Date(interval.end)),
         }));
 
+export const copyCursor = (cursor: Cursor): Cursor => ({
+    boardId: cursor.boardId,
+    position: {
+        ...cursor.position,
+    },
+    size: {
+        ...cursor.size,
+    },
+});
+
 export const moveCursor = (cursor: Cursor, x: number, y: number): Cursor => ({
-        ...cursor,
-        position: {
-            x: cursor.position.x + (x * cursor.size.width),
-            y: cursor.position.y + (y * cursor.size.height),
-        },
-    });
+    ...copyCursor(cursor),
+    position: {
+        x: cursor.position.x + (x * cursor.size.width),
+        y: cursor.position.y + (y * cursor.size.height),
+    },
+});
