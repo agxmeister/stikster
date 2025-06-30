@@ -55,7 +55,7 @@ export class TrackRepository
             const cost = task.cost / 3600 * 100;
             const leaf = await this.miro.addStickyNote(
                 infoCursor.boardId,
-                `Cost: <b>€${cost}</b><br/>Duration: <b>${task.length} days</b>`,
+                `Cost: <b>€${Math.round(cost)}</b><br/>Duration: <b>${task.length} days</b>`,
                 'gray',
                 infoCursor.position.x,
                 infoCursor.position.y,
