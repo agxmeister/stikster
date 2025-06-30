@@ -16,12 +16,12 @@ export class TrackService
         return await this.trackRepository.find(boardId, labels);
     }
 
-    async createTrackByRange(range: Range, cursor: Cursor): Promise<[Track, Cursor]>
+    async createTrackByRange(cursor: Cursor, range: Range): Promise<[Track, Cursor]>
     {
         return await this.trackRepository.createByRange(range, cursor);
     }
 
-    async createTracksByTasks(tasks: Task[], mainTaskKey: string, cursor: Cursor, range: Range): Promise<[Track[], Cursor]>
+    async createTracksByTasks(cursor: Cursor, tasks: Task[], mainTaskKey: string, range: Range): Promise<[Track[], Cursor]>
     {
         const tracks = [];
 

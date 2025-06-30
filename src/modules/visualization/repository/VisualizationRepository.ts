@@ -17,30 +17,28 @@ export class VisualizationRepository
         const tracks = [] as Track[];
 
         let currentCursor = cursor;
-        let newTracks;
-        let newCursor;
+        let topRangeTrack, bottomRangeTrack;
 
-        [newTracks, newCursor] = await this.trackService.createTrackByRange({
+        [topRangeTrack, currentCursor] = await this.trackService.createTrackByRange(currentCursor, {
             begin: timeline.begin,
             end: timeline.end,
-        }, currentCursor);
-        tracks.push(newTracks);
-        currentCursor = newCursor;
+        });
+        tracks.push(topRangeTrack);
 
         for (const branch of timeline.branches) {
-            [newTracks, newCursor] = await this.trackService.createTracksByTasks(branch.tasks, branch.footprint, currentCursor, {
+            const [branchTracks, newCursor] = await this.trackService.createTracksByTasks(currentCursor, branch.tasks, branch.footprint, {
                 begin: timeline.begin,
                 end: timeline.end,
             });
-            tracks.push(newTracks);
+            tracks.push(...branchTracks);
             currentCursor = newCursor;
         }
 
-        [newTracks] = await this.trackService.createTrackByRange({
+        [bottomRangeTrack] = await this.trackService.createTrackByRange(currentCursor, {
             begin: timeline.begin,
             end: timeline.end,
-        }, currentCursor);
-        tracks.push(newTracks);
+        });
+        tracks.push(bottomRangeTrack);
 
         const visualization = {
             id: uuid(),
