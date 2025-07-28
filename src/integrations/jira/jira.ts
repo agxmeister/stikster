@@ -17,6 +17,24 @@ export class Jira
         return await response.json();
     }
 
+    async getChangelog(issueKey: string): Promise<any>
+    {
+        const getChangelogChunk = async (startAt: number = 0): Promise<any[]> => {
+            const response = await fetch(`${this.url}/rest/api/2/issue/${issueKey}/changelog?startAt=${startAt}`, {
+                method: "GET",
+                headers: this.getHeaders(),
+            });
+            const data = await response.json();
+
+            if (!data.values || data.values.length === 0) {
+                return [];
+            }
+
+            return [...data.values, ...(await getChangelogChunk(startAt + data.values.length))];
+        };
+        return await getChangelogChunk();
+    }
+
     async search(jql: string): Promise<any>
     {
         const fetchAll = async (nextPageToken: string|null = null): Promise<any> => {
@@ -42,7 +60,10 @@ export class Jira
             }
 
             const statuses = await this.getStatuses();
-            const tasks = data.issues.map((issue: any) => {
+            const tasks = await Promise.all(data.issues.map(async (issue: any) => {
+                const histories = issue.changelog.maxResults >= issue.changelog.total
+                    ? issue.changelog.histories
+                    : await this.getChangelog(issue.key);
                 return {
                     key: issue.key,
                     type: issue.fields.issuetype.name,
@@ -50,7 +71,7 @@ export class Jira
                     cost: issue.fields.aggregatetimespent,
                     url: `${this.url}/browse/${issue.key}`,
                     intervals: getIntervals(
-                        getStatusChanges(issue),
+                        getStatusChanges(histories),
                         statuses
                             .filter((status: any) => status.statusCategory.name === "In Progress")
                             .map((status: any) => status.id),
@@ -59,7 +80,7 @@ export class Jira
                             .map((status: any) => status.id),
                     ),
                 }
-            });
+            }));
 
             if (!data?.nextPageToken) {
                 return tasks;

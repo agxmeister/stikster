@@ -1,4 +1,4 @@
-export const getStatusChanges = (issue: any) => issue.changelog.histories
+export const getStatusChanges = (histories: any) => histories
     .reduce(
         (acc: any[], history: any) => [
             ...acc,
