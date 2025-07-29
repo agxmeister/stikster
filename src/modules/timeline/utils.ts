@@ -7,13 +7,18 @@ export const holidays = [
 ];
 
 export const refineJiraData = (data: any): Task => {
-    const started = data.intervals.length > 0 ? data.intervals[0].start : (new Date()).toISOString();
-    const completed = data.intervals.length > 0 ? data.intervals[data.intervals.length - 1].end : (new Date()).toISOString();
+    const firstInterval = data.intervals.length > 0 ? data.intervals[0] : null;
+    const lastInterval = data.intervals.length > 0 ? data.intervals[data.intervals.length - 1] : null;
+
+    const started = firstInterval ? firstInterval.start : (new Date()).toISOString();
+    const completed = lastInterval && lastInterval.final ? lastInterval.end : (new Date()).toISOString();
+
     return {
         ...data,
         started: started,
         completed: completed,
         length: getWorkdaysDiff(started, completed),
+        ongoing: !!lastInterval && lastInterval.ongoing,
     }
 };
 

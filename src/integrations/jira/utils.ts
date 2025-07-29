@@ -17,8 +17,9 @@ export const getIntervals = (
     progressStatusIds: string[],
     doneStatusIds: string[],
 ): any => first(statusChanges).reduce((acc: any[], change: any) => {
-    const isInProgressOrDone = [...progressStatusIds, ...doneStatusIds].includes(change.to);
+    const isInProgress = progressStatusIds.includes(change.to);
     const isDone = doneStatusIds.includes(change.to);
+    const isInProgressOrDone = isInProgress || isDone;
     const last = acc[acc.length - 1];
 
     if (isInProgressOrDone) {
@@ -26,12 +27,14 @@ export const getIntervals = (
             acc.push({
                 start: change.created,
                 end: change.created,
+                ongoing: isInProgress,
                 final: isDone,
             });
         } else {
             acc[acc.length - 1] = {
                 ...last,
                 end: change.created,
+                ongoing: isInProgress,
                 final: isDone,
             };
         }
@@ -39,6 +42,7 @@ export const getIntervals = (
         acc[acc.length - 1] = {
             ...last,
             end: change.created,
+            ongoing: false,
             final: true,
         };
     }

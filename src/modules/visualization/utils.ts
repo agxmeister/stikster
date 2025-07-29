@@ -24,12 +24,18 @@ export const getColor = (task: Task, indent: number): color => {
         .otherwise((): color => 'light_yellow');
 }
 
-export const isInProgress = (task: Task, indent: number) =>
-    task.intervals.some((interval: Interval) =>
-        isWithinInterval(getWorkday(task.started, indent), {
+export const isInProgress = (task: Task, indent: number) => {
+    const lastInterval = task.intervals.length > 0 ?task.intervals[task.intervals.length - 1] : null;
+    const workDay = getWorkday(task.started, indent);
+    if (lastInterval && new Date(lastInterval.end) < workDay) {
+        return task.ongoing;
+    }
+    return task.intervals.some((interval: Interval) =>
+        isWithinInterval(workDay, {
             start: startOfDay(new Date(interval.start)),
             end: endOfDay(new Date(interval.end)),
         }));
+}
 
 export const copyCursor = (cursor: Cursor): Cursor => ({
     boardId: cursor.boardId,

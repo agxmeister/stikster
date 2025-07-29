@@ -22,6 +22,7 @@ export type Task = {
     started: string;
     completed: string;
     length: number;
+    ongoing: boolean;
 }
 
 export type Interval = {
