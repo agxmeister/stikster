@@ -25,7 +25,9 @@ export class VisualizationRepository
         });
         tracks.push(topRangeTrack);
 
-        for (const branch of timeline.branches) {
+        const branches = [...timeline.branches]
+            .sort((a, b) => a.begin.localeCompare(b.begin));
+        for (const branch of branches) {
             const [branchTracks, newCursor] = await this.trackService.createTracksByTasks(currentCursor, branch.tasks, branch.footprint, {
                 begin: timeline.begin,
                 end: timeline.end,
