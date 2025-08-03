@@ -10,6 +10,7 @@ import {
     AnchorRepository,
     AnchorService
 } from "@/modules/visualization";
+import {ConfigurationRepository, ConfigurationService} from "@/modules/configuration";
 
 const container: Container = new Container();
 
@@ -18,11 +19,13 @@ container.bind(TrackRepository).toSelf();
 container.bind(AnchorRepository).toSelf();
 container.bind(TimelineRepository).toSelf();
 container.bind(VisualizationRepository).toSelf();
+container.bind(ConfigurationRepository).toSelf();
 container.bind(TaskService).toSelf();
 container.bind(TrackService).toSelf();
 container.bind(AnchorService).toSelf();
 container.bind(TimelineService).toSelf();
 container.bind(VisualizationService).toSelf();
+container.bind(ConfigurationService).toSelf();
 container.bind(Jira).toDynamicValue(() => new Jira(
     process.env.JIRA_URL!,
     process.env.JIRA_USERNAME!,

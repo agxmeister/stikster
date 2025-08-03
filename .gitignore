@@ -9,6 +9,8 @@
 !/data/timelines/.gitkeep
 /data/visualizations/*
 !/data/visualizations/.gitkeep
+/data/configurations/*
+!/data/configurations/.gitkeep
 
 # misc
 .DS_Store
