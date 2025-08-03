@@ -1,5 +1,5 @@
 import {container} from "@/container";
-import {ConfigurationService} from "@/modules/configuration";
+import {ConfigurationService, configurationDataSchema} from "@/modules/configuration";
 
 export const GET = async (
     _: Request,
@@ -13,7 +13,7 @@ export const GET = async (
     if (!configuration) {
         return Response.json(
             {
-                error: `Configuration ${configurationId} not found.`,
+                error: `Configuration ${configurationId} not found or invalid.`,
             },
             {
                 status: 404,
@@ -29,7 +29,19 @@ export const PUT = async (
     {params}: {params: Promise<{configurationId: string}>}
 ): Promise<Response> => {
     const {configurationId} = await params;
-    const data = await request.json();
+
+    const {success, error, data} = configurationDataSchema.partial().safeParse(await request.json());
+    if (!success) {
+        return Response.json(
+            {
+                error: "Configuration data doesn't match the schema.",
+                details: error?.issues,
+            },
+            {
+                status: 400,
+            }
+        );
+    }
 
     const configurationService = container.get(ConfigurationService);
     const configuration = await configurationService.update(configurationId, data);
@@ -37,7 +49,7 @@ export const PUT = async (
     if (!configuration) {
         return Response.json(
             {
-                error: `Configuration ${configurationId} not found.`,
+                error: `Configuration ${configurationId} not found or invalid.`,
             },
             {
                 status: 404,

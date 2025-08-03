@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
 import {ConfigurationRepository} from "@/modules/configuration/repository/ConfigurationRepository";
-import type {Configuration} from "@/modules/configuration/types";
+import type {Configuration, ConfigurationData} from "@/modules/configuration/types";
 
 @injectable()
 export class ConfigurationService
@@ -9,7 +9,7 @@ export class ConfigurationService
     {
     }
 
-    async create(data: Record<string, any>): Promise<Configuration>
+    async create(data: ConfigurationData): Promise<Configuration>
     {
         return await this.configurationRepository.create(data);
     }
@@ -19,7 +19,7 @@ export class ConfigurationService
         return await this.configurationRepository.get(id);
     }
 
-    async update(id: string, data: Record<string, any>): Promise<Configuration | null>
+    async update(id: string, data: Partial<ConfigurationData>): Promise<Configuration | null>
     {
         return await this.configurationRepository.update(id, data);
     }

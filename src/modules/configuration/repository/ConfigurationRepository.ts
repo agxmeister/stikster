@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import {v4 as uuid} from "uuid";
 import {injectable} from "inversify";
-import type {Configuration} from "@/modules/configuration/types";
+import {configurationDataSchema} from "@/modules/configuration/schemas";
+import type {Configuration, ConfigurationData} from "@/modules/configuration/types";
 
 @injectable()
 export class ConfigurationRepository
 {
-    async create(data: Record<string, any>): Promise<Configuration>
+    async create(data: ConfigurationData): Promise<Configuration>
     {
         const configuration: Configuration = {
             id: uuid(),
@@ -15,7 +16,7 @@ export class ConfigurationRepository
         };
 
         await fs.promises.writeFile(
-            `${process.env.DATA_PATH}/configurations/${configuration.id}.json`, 
+            `${process.env.DATA_PATH}/configurations/${configuration.id}.json`,
             JSON.stringify(configuration, null, 4)
         );
 
@@ -26,14 +27,16 @@ export class ConfigurationRepository
     {
         try {
             const data = await fs.promises.readFile(`${process.env.DATA_PATH}/configurations/${id}.json`, 'utf-8');
-            return JSON.parse(data);
+            const configuration = JSON.parse(data);
+            configurationDataSchema.parse(configuration.data);
+            return configuration;
         } catch (error) {
             console.error(`Error reading configuration with id ${id}:`, error);
             return null;
         }
     }
 
-    async update(id: string, data: Record<string, any>): Promise<Configuration | null>
+    async update(id: string, data: Partial<ConfigurationData>): Promise<Configuration | null>
     {
         const existingConfiguration = await this.get(id);
         if (!existingConfiguration) {
