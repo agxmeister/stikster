@@ -32,4 +32,28 @@ export class ConfigurationRepository
             return null;
         }
     }
+
+    async update(id: string, data: Record<string, any>): Promise<Configuration | null>
+    {
+        const existingConfiguration = await this.get(id);
+        if (!existingConfiguration) {
+            return null;
+        }
+
+        const updatedConfiguration: Configuration = {
+            ...existingConfiguration,
+            data: {
+                ...existingConfiguration.data,
+                ...data,
+            },
+            updatedAt: (new Date()).toISOString(),
+        };
+
+        await fs.promises.writeFile(
+            `${process.env.DATA_PATH}/configurations/${id}.json`,
+            JSON.stringify(updatedConfiguration, null, 4)
+        );
+
+        return updatedConfiguration;
+    }
 }

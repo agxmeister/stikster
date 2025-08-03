@@ -18,4 +18,9 @@ export class ConfigurationService
     {
         return await this.configurationRepository.get(id);
     }
+
+    async update(id: string, data: Record<string, any>): Promise<Configuration | null>
+    {
+        return await this.configurationRepository.update(id, data);
+    }
 }

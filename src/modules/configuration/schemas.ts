@@ -7,3 +7,7 @@ export const getConfiguration = zod.object({
 export const createConfiguration = zod.object({
     data: zod.record(zod.any()).describe("Configuration data as a JSON object."),
 });
+
+export const updateConfiguration = zod.object({
+    data: zod.record(zod.any()).describe("Configuration data as a JSON object to update."),
+});
