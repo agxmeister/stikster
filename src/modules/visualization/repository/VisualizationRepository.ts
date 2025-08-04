@@ -51,4 +51,15 @@ export class VisualizationRepository
 
         return visualization;
     }
+
+    async get(id: string): Promise<Visualization | null>
+    {
+        try {
+            const data = await fs.promises.readFile(`${process.env.DATA_PATH}/visualizations/${id}.json`, 'utf-8');
+            return JSON.parse(data);
+        } catch (error) {
+            console.error(`Error reading visualizations with id ${id}:`, error);
+            return null;
+        }
+    }
 }

@@ -14,4 +14,9 @@ export class VisualizationService
     {
         return this.visualizationRepository.create(timeline, cursor);
     }
+
+    async get(id: string): Promise<Visualization | null>
+    {
+        return this.visualizationRepository.get(id);
+    }
 }
