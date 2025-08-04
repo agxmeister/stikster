@@ -23,3 +23,37 @@ export const GET = async (
 
     return Response.json(anchor);
 }
+
+export const DELETE = async (
+    _: Request,
+    {params}: {params: Promise<{anchorId: string}>}
+): Promise<Response> => {
+    const {anchorId} = await params;
+
+    const anchorService = container.get(AnchorService);
+    const anchor = await anchorService.get(anchorId);
+
+    try {
+        if (anchor) {
+            await anchorService.delete(anchor.cursor.boardId, anchor.id);
+        }
+        return Response.json(
+            {
+                message: `Anchor ${anchorId} has been successfully deleted.`,
+            },
+            {
+                status: 200,
+            }
+        );
+    } catch (error) {
+        return Response.json(
+            {
+                error: `Failed to delete anchor ${anchorId}.`,
+                details: error,
+            },
+            {
+                status: 500,
+            }
+        );
+    }
+}
