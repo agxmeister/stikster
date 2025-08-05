@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
 import {TrackRepository} from "@/modules/visualization/repository/TrackRepository";
-import {Track, Cursor, Range, moveCursor} from "@/modules/visualization";
+import {Track, Range, moveCursor, Site, Cursor} from "@/modules/visualization";
 import {Task} from "@/modules/timeline";
 import {getWorkdaysDiff} from "@/modules/timeline/utils";
 
@@ -11,17 +11,12 @@ export class TrackService
     {
     }
 
-    async find(boardId: string, labels: string[]): Promise<any[]>
+    async createTrackByRange(range: Range, site: Site): Promise<[Track, Cursor]>
     {
-        return await this.trackRepository.find(boardId, labels);
+        return await this.trackRepository.createByRange(range, site);
     }
 
-    async createTrackByRange(cursor: Cursor, range: Range): Promise<[Track, Cursor]>
-    {
-        return await this.trackRepository.createByRange(range, cursor);
-    }
-
-    async createTracksByTasks(cursor: Cursor, tasks: Task[], mainTaskKey: string, range: Range): Promise<[Track[], Cursor]>
+    async createTracksByTasks(tasks: Task[], mainTaskKey: string, range: Range, site: Site): Promise<[Track[], Cursor]>
     {
         const tracks = [];
 
@@ -35,11 +30,14 @@ export class TrackService
         let row = 0;
         for (const task of allTasks) {
             const column = getWorkdaysDiff(range.begin, task.started) - 1;
-            const [newTrack, _] = await this.trackRepository.createByTask(task, moveCursor(cursor, column, row));
+            const [newTrack, _] = await this.trackRepository.createByTask(task, {
+                ...site,
+                cursor: moveCursor(site.cursor, column, row)
+            });
             tracks.push(newTrack);
             row++;
         }
 
-        return [tracks, moveCursor(cursor, 0, row)];
+        return [tracks, moveCursor(site.cursor, 0, row)];
     }
 }

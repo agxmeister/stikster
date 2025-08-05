@@ -35,7 +35,7 @@ export const DELETE = async (
 
     try {
         if (anchor) {
-            await anchorService.delete(anchor.cursor.boardId, anchor.id);
+            await anchorService.delete(anchor.id);
         }
         return Response.json(
             {

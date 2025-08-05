@@ -38,7 +38,6 @@ export const isInProgress = (task: Task, indent: number) => {
 }
 
 export const copyCursor = (cursor: Cursor): Cursor => ({
-    boardId: cursor.boardId,
     position: {
         ...cursor.position,
     },

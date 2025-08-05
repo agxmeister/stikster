@@ -14,18 +14,21 @@ export type Track = {
 }
 
 export type Leaf = {
-    id: string,
-    cursor: Cursor,
+    board: string,
+    sticker: string,
 }
 
 export type Anchor = {
     id: string,
-    label: string,
+    site: Site,
+}
+
+export type Site = {
+    board: string,
     cursor: Cursor,
 }
 
 export type Cursor = {
-    boardId: string,
     position: Position,
     size: Size,
 }

@@ -2,6 +2,7 @@ import {inject, injectable} from "inversify";
 import {Miro} from "@/integrations/miro/miro";
 import * as fs from "node:fs";
 import {Anchor} from "@/modules/visualization";
+import {v4 as uuid} from "uuid";
 
 @injectable()
 export class AnchorRepository
@@ -11,23 +12,27 @@ export class AnchorRepository
     }
 
     async create(boardId: string, label: string): Promise<Anchor | null> {
-        const anchor = (await this.miro.findStickyNotes(boardId, [label]))
-            .map((stickyNote: any) => ({
-                id: stickyNote.id,
-                label: label,
-                cursor: {
-                    boardId: boardId,
-                    position: {
-                        x: stickyNote.position.x,
-                        y: stickyNote.position.y,
+        const stickyNotes = (await this.miro.findStickyNotes(boardId, [label]))
+            .map((stickyNote: any): Anchor => ({
+                id: uuid(),
+                site: {
+                    board: boardId,
+                    cursor: {
+                        position: {
+                            x: stickyNote.position.x,
+                            y: stickyNote.position.y,
+                        },
+                        size: {
+                            width: stickyNote.geometry.width,
+                            height: stickyNote.geometry.height,
+                        },
                     },
-                    size: {
-                        width: stickyNote.geometry.width,
-                        height: stickyNote.geometry.height,
-                    },
-                }
-            }))
-            .reduce((_, anchor) => anchor);
+                },
+            }));
+        if (stickyNotes.length === 0) {
+            return null;
+        }
+        const anchor = stickyNotes.reduce((_, anchor) => anchor);
         await fs.promises.writeFile(`${process.env.DATA_PATH}/anchors/${anchor.id}.json`, JSON.stringify(anchor, null, 4));
         return anchor;
     }
@@ -61,9 +66,8 @@ export class AnchorRepository
         }
     }
 
-    async delete(boardId: string, id: string): Promise<void>
+    async delete(id: string): Promise<void>
     {
-        await this.miro.removeStickyNote(boardId, id);
         try {
             await fs.promises.unlink(`${process.env.DATA_PATH}/anchors/${id}.json`);
         } catch (error) {

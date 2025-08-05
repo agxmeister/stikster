@@ -1,7 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Timeline} from "@/modules/timeline";
 import {VisualizationRepository} from "@/modules/visualization/repository/VisualizationRepository";
-import {Visualization, Cursor} from "@/modules/visualization";
+import {Visualization, Cursor, Site} from "@/modules/visualization";
 
 @injectable()
 export class VisualizationService
@@ -10,9 +10,9 @@ export class VisualizationService
     {
     }
 
-    async create(timeline: Timeline, cursor: Cursor): Promise<Visualization>
+    async create(timeline: Timeline, site: Site): Promise<Visualization>
     {
-        return this.visualizationRepository.create(timeline, cursor);
+        return this.visualizationRepository.create(timeline, site);
     }
 
     async get(id: string): Promise<Visualization | null>

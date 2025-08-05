@@ -24,8 +24,8 @@ export class AnchorService
         return await this.anchorRepository.getList();
     }
 
-    async delete(boardId: string, anchorId: string): Promise<void>
+    async delete(anchorId: string): Promise<void>
     {
-        await this.anchorRepository.delete(boardId, anchorId);
+        await this.anchorRepository.delete(anchorId);
     }
 }
