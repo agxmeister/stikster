@@ -36,7 +36,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            ongoing: true,
             final: false,
         }],
     },
@@ -46,7 +45,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -60,7 +58,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T12:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -73,7 +70,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T11:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -86,14 +82,7 @@ const testCases = [
         expected: [
             {
                 start: '2024-01-01T10:00:00.000Z',
-                end: '2024-01-01T10:00:00.000Z',
-                ongoing: true,
-                final: false,
-            },
-            {
-                start: '2024-01-02T10:00:00.000Z',
                 end: '2024-01-02T10:00:00.000Z',
-                ongoing: true,
                 final: false,
             },
         ],
@@ -107,14 +96,7 @@ const testCases = [
         expected: [
             {
                 start: '2024-01-01T10:00:00.000Z',
-                end: '2024-01-01T10:00:00.000Z',
-                ongoing: true,
-                final: false,
-            },
-            {
-                start: '2024-01-02T10:00:00.000Z',
                 end: '2024-01-02T10:00:00.000Z',
-                ongoing: false,
                 final: true,
             },
         ],
@@ -128,12 +110,11 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T11:00:00.000Z',
-            ongoing: false,
             final: false,
         }],
     },
     {
-        description: 'should not modify final intervals when transitioning out',
+        description: 'should modify final intervals when transitioning to idle',
         statusChanges: [
             { to: status.done, created: '2024-01-01T10:00:00.000Z' },
             { to: status.new, created: '2024-01-01T11:00:00.000Z' },
@@ -141,8 +122,7 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            ongoing: false,
-            final: true,
+            final: false,
         }],
     },
     {
@@ -154,7 +134,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-02T10:00:00.000Z',
-            ongoing: false,
             final: false,
         }],
     },
@@ -170,13 +149,11 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-01T11:00:00.000Z',
-                ongoing: false,
                 final: false,
             },
             {
                 start: '2024-01-02T10:00:00.000Z',
                 end: '2024-01-02T11:00:00.000Z',
-                ongoing: false,
                 final: true,
             },
         ],
@@ -192,7 +169,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T13:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -208,13 +184,11 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-01T11:00:00.000Z',
-                ongoing: false,
                 final: true,
             },
             {
                 start: '2024-01-03T10:00:00.000Z',
                 end: '2024-01-03T11:00:00.000Z',
-                ongoing: false,
                 final: true,
             },
         ],
@@ -231,13 +205,11 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-02T10:00:00.000Z',
-                ongoing: false,
                 final: false,
             },
             {
                 start: '2024-01-03T10:00:00.000Z',
                 end: '2024-01-03T10:00:00.000Z',
-                ongoing: true,
                 final: false,
             },
         ],
@@ -251,7 +223,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T12:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -264,7 +235,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -280,13 +250,11 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-01T11:00:00.000Z',
-                ongoing: false,
                 final: false,
             },
             {
                 start: '2024-01-05T10:00:00.000Z',
                 end: '2024-01-05T11:00:00.000Z',
-                ongoing: false,
                 final: true,
             },
         ],
@@ -301,7 +269,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T11:00:00.000Z',
-            ongoing: false,
             final: true,
         }],
     },
@@ -316,9 +283,32 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            ongoing: true,
             final: false,
         }],
+    },
+    {
+        description: 'should handle reworks and interruptions',
+        statusChanges: [
+            { to: status.development, created: '2025-06-25T10:00:00.000Z' },
+            { to: status.done, created: '2025-06-30T10:00:00.000Z' },
+            { to: status.new, created: '2025-07-01T10:00:00.000Z' },
+            { to: status.development, created: '2025-07-01T10:00:00.000Z' },
+            { to: status.new, created: '2025-07-02T10:00:00.000Z' },
+            { to: status.development, created: '2025-07-02T10:00:00.000Z' },
+            { to: status.done, created: '2025-07-07T10:00:00.000Z' },
+        ],
+        expected: [
+            {
+                start: '2025-06-25T10:00:00.000Z',
+                end: '2025-06-30T10:00:00.000Z',
+                final: false,
+            },
+            {
+                start: '2025-07-01T10:00:00.000Z',
+                end: '2025-07-07T10:00:00.000Z',
+                final: true,
+            },
+        ],
     },
 ];
 

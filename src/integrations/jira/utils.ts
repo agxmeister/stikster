@@ -23,32 +23,44 @@ export const getIntervals = (
     const last = acc[acc.length - 1];
 
     if (isInProgressOrDone) {
-        if (!last || getDay(change.created) > getDay(last.end)) {
+        if (!last || ((last.final || last.interrupted) && (getDay(change.created) > getDay(last.end)))) {
             acc.push({
                 start: change.created,
                 end: change.created,
-                ongoing: isInProgress,
                 final: isDone,
+                interrupted: false,
             });
         } else {
             acc[acc.length - 1] = {
                 ...last,
                 end: change.created,
-                ongoing: isInProgress,
                 final: isDone,
+                interrupted: false,
             };
         }
-    } else if (last && !last.final) {
-        acc[acc.length - 1] = {
-            ...last,
-            end: change.created,
-            ongoing: false,
-            final: false,
-        };
+    } else if (last && !last.interrupted) {
+        if (last.final) {
+            acc[acc.length - 1] = {
+                ...last,
+                final: false,
+                interrupted: true,
+            };
+        } else {
+            acc[acc.length - 1] = {
+                ...last,
+                end: change.created,
+                final: false,
+                interrupted: true,
+            };
+        }
     }
 
     return acc;
-}, []);
+}, []).map(internal => ({
+    start: internal.start,
+    end: internal.end,
+    final: internal.final,
+}));
 
 export const getDateStarted = (statusChanges: any, statusIds: string[]) =>
     first(statusChanges)
