@@ -36,7 +36,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            final: false,
         }],
     },
     {
@@ -45,7 +44,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -58,7 +56,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T12:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -70,7 +67,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T11:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -83,7 +79,6 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-02T10:00:00.000Z',
-                final: false,
             },
         ],
     },
@@ -97,7 +92,6 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-02T10:00:00.000Z',
-                final: true,
             },
         ],
     },
@@ -110,7 +104,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T11:00:00.000Z',
-            final: false,
         }],
     },
     {
@@ -122,7 +115,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            final: false,
         }],
     },
     {
@@ -134,7 +126,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-02T10:00:00.000Z',
-            final: false,
         }],
     },
     {
@@ -149,12 +140,10 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-01T11:00:00.000Z',
-                final: false,
             },
             {
                 start: '2024-01-02T10:00:00.000Z',
                 end: '2024-01-02T11:00:00.000Z',
-                final: true,
             },
         ],
     },
@@ -169,7 +158,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T13:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -184,12 +172,10 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-01T11:00:00.000Z',
-                final: true,
             },
             {
                 start: '2024-01-03T10:00:00.000Z',
                 end: '2024-01-03T11:00:00.000Z',
-                final: true,
             },
         ],
     },
@@ -205,12 +191,10 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-02T10:00:00.000Z',
-                final: false,
             },
             {
                 start: '2024-01-03T10:00:00.000Z',
                 end: '2024-01-03T10:00:00.000Z',
-                final: false,
             },
         ],
     },
@@ -223,7 +207,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T12:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -235,7 +218,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -250,12 +232,10 @@ const testCases = [
             {
                 start: '2024-01-01T10:00:00.000Z',
                 end: '2024-01-01T11:00:00.000Z',
-                final: false,
             },
             {
                 start: '2024-01-05T10:00:00.000Z',
                 end: '2024-01-05T11:00:00.000Z',
-                final: true,
             },
         ],
     },
@@ -269,7 +249,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T11:00:00.000Z',
-            final: true,
         }],
     },
     {
@@ -283,7 +262,6 @@ const testCases = [
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
             end: '2024-01-01T10:00:00.000Z',
-            final: false,
         }],
     },
     {
@@ -301,12 +279,10 @@ const testCases = [
             {
                 start: '2025-06-25T10:00:00.000Z',
                 end: '2025-06-30T10:00:00.000Z',
-                final: false,
             },
             {
                 start: '2025-07-01T10:00:00.000Z',
                 end: '2025-07-07T10:00:00.000Z',
-                final: true,
             },
         ],
     },

@@ -18,7 +18,6 @@ export const refineJiraData = (data: any): Task => {
         started: started,
         completed: completed,
         length: getWorkdaysDiff(started, completed),
-        ongoing: !!lastInterval && lastInterval.ongoing,
     }
 };
 

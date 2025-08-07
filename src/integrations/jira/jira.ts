@@ -1,5 +1,5 @@
 import {injectable} from "inversify";
-import {getDateCompleted, getDateStarted, getIntervals, getStatusChanges} from "@/integrations/jira/utils";
+import {getIntervals, getStatusChanges} from "@/integrations/jira/utils";
 
 @injectable()
 export class Jira
@@ -60,6 +60,12 @@ export class Jira
             }
 
             const statuses = await this.getStatuses();
+            const progressStatusIds = statuses
+                .filter((status: any) => status.statusCategory.name === "In Progress")
+                .map((status: any) => status.id);
+            const doneStatusIds = statuses
+                .filter((status: any) => status.statusCategory.name === "Done")
+                .map((status: any) => status.id);
             const tasks = await Promise.all(data.issues.map(async (issue: any) => {
                 const histories = issue.changelog.maxResults >= issue.changelog.total
                     ? issue.changelog.histories
@@ -72,13 +78,10 @@ export class Jira
                     url: `${this.url}/browse/${issue.key}`,
                     intervals: getIntervals(
                         getStatusChanges(histories),
-                        statuses
-                            .filter((status: any) => status.statusCategory.name === "In Progress")
-                            .map((status: any) => status.id),
-                        statuses
-                            .filter((status: any) => status.statusCategory.name === "Done")
-                            .map((status: any) => status.id),
+                        progressStatusIds,
+                        doneStatusIds,
                     ),
+                    ongoing: !doneStatusIds.includes(issue.fields.status.id),
                 }
             }));
 

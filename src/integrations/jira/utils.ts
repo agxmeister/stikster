@@ -16,51 +16,44 @@ export const getIntervals = (
     statusChanges: any,
     progressStatusIds: string[],
     doneStatusIds: string[],
-): any => first(statusChanges).reduce((acc: any[], change: any) => {
+) => first(statusChanges).reduce((acc, change) => {
     const isInProgress = progressStatusIds.includes(change.to);
     const isDone = doneStatusIds.includes(change.to);
     const isInProgressOrDone = isInProgress || isDone;
-    const last = acc[acc.length - 1];
+
+    const current = acc.intervals[acc.intervals.length - 1];
 
     if (isInProgressOrDone) {
-        if (!last || ((last.final || last.interrupted) && (getDay(change.created) > getDay(last.end)))) {
-            acc.push({
+        if (!current || ((!acc.ongoing) && (getDay(change.created) > getDay(current.end)))) {
+            acc.intervals.push({
                 start: change.created,
                 end: change.created,
-                final: isDone,
-                interrupted: false,
             });
         } else {
-            acc[acc.length - 1] = {
-                ...last,
+            acc.intervals[acc.intervals.length - 1] = {
+                ...current,
                 end: change.created,
-                final: isDone,
-                interrupted: false,
             };
         }
-    } else if (last && !last.interrupted) {
-        if (last.final) {
-            acc[acc.length - 1] = {
-                ...last,
-                final: false,
-                interrupted: true,
-            };
-        } else {
-            acc[acc.length - 1] = {
-                ...last,
+        acc.ongoing = !isDone;
+        acc.idle = false;
+    } else if (current && !acc.idle) {
+        if (acc.ongoing) {
+            acc.intervals[acc.intervals.length - 1] = {
+                ...current,
                 end: change.created,
-                final: false,
-                interrupted: true,
             };
         }
+        acc.ongoing = false;
+        acc.idle = true;
     }
 
     return acc;
-}, []).map(internal => ({
-    start: internal.start,
-    end: internal.end,
-    final: internal.final,
-}));
+}, {
+    intervals: [],
+    idle: false,
+    ongoing: false,
+}).intervals;
 
 export const getDateStarted = (statusChanges: any, statusIds: string[]) =>
     first(statusChanges)
