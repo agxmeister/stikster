@@ -60,7 +60,7 @@ export const getServer = () => {
                     }],
                 };
             }
-            await anchorService.delete(anchor?.cursor.boardId, anchor?.id);
+            await anchorService.delete(anchor?.id);
             return {
                 content: [{
                     type: "text",
@@ -79,7 +79,7 @@ export const getServer = () => {
             return {
                 content: [{
                     type: "text",
-                    text: anchor ? `The Anchor ${anchor.id} has label "${anchor.label}", coordinates [${anchor.cursor.position.x}, ${anchor.cursor.position.y}], and dimensions [${anchor.cursor.size.width}, ${anchor.cursor.size.height}]` : `Anchor ${anchorId} is not exists`,
+                    text: anchor ? `The Anchor ${anchor.id} has coordinates [${anchor.site.cursor.position.x}, ${anchor.site.cursor.position.y}], and dimensions [${anchor.site.cursor.size.width}, ${anchor.site.cursor.size.height}]` : `Anchor ${anchorId} is not exists`,
                 }],
                 isError: !anchor,
             };
@@ -125,7 +125,7 @@ export const getServer = () => {
         async ({timelineId, anchorId}) => {
             const timeline = await timelineService.get(timelineId);
             const anchor = await anchorService.get(anchorId);
-            const visualization = await visualizationService.create(timeline!, anchor!.cursor);
+            const visualization = await visualizationService.create(timeline!, anchor!.site);
             return {
                 content: [{
                     type: "text",
