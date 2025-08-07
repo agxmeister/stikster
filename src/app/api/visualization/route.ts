@@ -2,7 +2,7 @@ import {container} from "@/container";
 import {TimelineService} from "@/modules/timeline";
 import {AnchorService, VisualizationService} from "@/modules/visualization";
 
-export async function PUT(request: Request): Promise<Response>
+export async function POST(request: Request): Promise<Response>
 {
     const data = await request.json();
 
