@@ -11,7 +11,7 @@ export const refineJiraData = (data: any): Task => {
     const lastInterval = data.intervals.length > 0 ? data.intervals[data.intervals.length - 1] : null;
 
     const started = firstInterval ? firstInterval.start : (new Date()).toISOString();
-    const completed = lastInterval && lastInterval.final ? lastInterval.end : (new Date()).toISOString();
+    const completed = lastInterval && !data.ongoing ? lastInterval.end : (new Date()).toISOString();
 
     return {
         ...data,

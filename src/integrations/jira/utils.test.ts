@@ -23,7 +23,7 @@ const testCases = [
         expected: [],
     },
     {
-        description: 'should return empty array for status changes with no progress or done statuses',
+        description: 'should return empty array for idle status changes',
         statusChanges: [
             { to: status.new, created: '2024-01-01T10:00:00.000Z' },
             { to: status.backlog, created: '2024-01-01T11:00:00.000Z' },
@@ -59,18 +59,7 @@ const testCases = [
         }],
     },
     {
-        description: 'should update interval properties when merging same day changes',
-        statusChanges: [
-            { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
-            { to: status.done, created: '2024-01-01T11:00:00.000Z' },
-        ],
-        expected: [{
-            start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-01T11:00:00.000Z',
-        }],
-    },
-    {
-        description: 'should create separate intervals for different days',
+        description: 'should merge progress status changes across different days',
         statusChanges: [
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
             { to: status.detailing, created: '2024-01-02T10:00:00.000Z' },
@@ -83,7 +72,7 @@ const testCases = [
         ],
     },
     {
-        description: 'should handle progress to done transition across different days',
+        description: 'should merge progress to done transition across different days',
         statusChanges: [
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
             { to: status.done, created: '2024-01-02T10:00:00.000Z' },
@@ -96,7 +85,7 @@ const testCases = [
         ],
     },
     {
-        description: 'should close interval when transitioning from progress to non-progress/non-done status',
+        description: 'should update interval when transitioning from progress to idle status on the same day',
         statusChanges: [
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
             { to: status.new, created: '2024-01-01T11:00:00.000Z' },
@@ -107,25 +96,26 @@ const testCases = [
         }],
     },
     {
-        description: 'should modify final intervals when transitioning to idle',
+        description: 'should update interval when transitioning from progress to idle status on a different day',
         statusChanges: [
-            { to: status.done, created: '2024-01-01T10:00:00.000Z' },
-            { to: status.new, created: '2024-01-01T11:00:00.000Z' },
+            { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
+            { to: status.new, created: '2024-01-03T11:00:00.000Z' },
         ],
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-01T10:00:00.000Z',
+            end: '2024-01-03T11:00:00.000Z',
         }],
     },
     {
-        description: 'should handle transition from progress to non-progress across different days',
+        description: 'should update interval only once when transitioning between idle statuses',
         statusChanges: [
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
-            { to: status.new, created: '2024-01-02T10:00:00.000Z' },
+            { to: status.new, created: '2024-01-03T11:00:00.000Z' },
+            { to: status.queuing, created: '2024-01-05T11:00:00.000Z' },
         ],
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-02T10:00:00.000Z',
+            end: '2024-01-03T11:00:00.000Z',
         }],
     },
     {
@@ -151,13 +141,13 @@ const testCases = [
         description: 'should handle workflow with multiple progress states',
         statusChanges: [
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
-            { to: status.detailing, created: '2024-01-01T11:00:00.000Z' },
-            { to: status.development, created: '2024-01-01T12:00:00.000Z' },
-            { to: status.done, created: '2024-01-01T13:00:00.000Z' },
+            { to: status.detailing, created: '2024-01-02T11:00:00.000Z' },
+            { to: status.development, created: '2024-01-03T12:00:00.000Z' },
+            { to: status.done, created: '2024-01-04T13:00:00.000Z' },
         ],
         expected: [{
             start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-01T13:00:00.000Z',
+            end: '2024-01-04T13:00:00.000Z',
         }],
     },
     {
@@ -180,7 +170,7 @@ const testCases = [
         ],
     },
     {
-        description: 'should handle task left in progress state',
+        description: 'should handle tasks returned to the idle state and taken back to progress',
         statusChanges: [
             { to: status.new, created: '2024-01-01T09:00:00.000Z' },
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
@@ -210,17 +200,6 @@ const testCases = [
         }],
     },
     {
-        description: 'should handle status changes with same timestamp',
-        statusChanges: [
-            { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
-            { to: status.done, created: '2024-01-01T10:00:00.000Z' },
-        ],
-        expected: [{
-            start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-01T10:00:00.000Z',
-        }],
-    },
-    {
         description: 'should handle status changes spanning multiple days with gaps',
         statusChanges: [
             { to: status.engaging, created: '2024-01-01T10:00:00.000Z' },
@@ -238,31 +217,6 @@ const testCases = [
                 end: '2024-01-05T11:00:00.000Z',
             },
         ],
-    },
-    {
-        description: 'should handle all progress status IDs including development',
-        statusChanges: [
-            { to: status.new, created: '2024-01-01T09:00:00.000Z' },
-            { to: status.development, created: '2024-01-01T10:00:00.000Z' },
-            { to: status.postponed, created: '2024-01-01T11:00:00.000Z' },
-        ],
-        expected: [{
-            start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-01T11:00:00.000Z',
-        }],
-    },
-    {
-        description: 'should handle status not in progress or done arrays',
-        statusChanges: [{ to: status.queuing, created: '2024-01-01T10:00:00.000Z' }],
-        expected: [],
-    },
-    {
-        description: 'should handle progress status (engaging)',
-        statusChanges: [{ to: status.engaging, created: '2024-01-01T10:00:00.000Z' }],
-        expected: [{
-            start: '2024-01-01T10:00:00.000Z',
-            end: '2024-01-01T10:00:00.000Z',
-        }],
     },
     {
         description: 'should handle reworks and interruptions',

@@ -25,11 +25,13 @@ export const getColor = (task: Task, indent: number): color => {
 }
 
 export const isInProgress = (task: Task, indent: number) => {
-    const lastInterval = task.intervals.length > 0 ?task.intervals[task.intervals.length - 1] : null;
     const workDay = getWorkday(task.started, indent);
-    if (lastInterval && new Date(lastInterval.end) < workDay) {
-        return task.ongoing;
+
+    const lastInterval = task.intervals.length > 0 ?task.intervals[task.intervals.length - 1] : null;
+    if (task.ongoing && lastInterval && new Date(lastInterval.end) < workDay) {
+        return true;
     }
+
     return task.intervals.some((interval: Interval) =>
         isWithinInterval(workDay, {
             start: startOfDay(new Date(interval.start)),

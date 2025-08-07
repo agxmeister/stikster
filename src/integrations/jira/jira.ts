@@ -46,6 +46,7 @@ export class Jira
                     fields: [
                         "key",
                         "summary",
+                        "status",
                         "issuetype",
                         "aggregatetimespent",
                     ],
