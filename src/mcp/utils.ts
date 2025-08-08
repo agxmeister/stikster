@@ -1,9 +1,14 @@
 import {z as zod} from "zod";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {container} from "@/container";
-import {AnchorService, VisualizationService} from "@/modules/visualization";
+import {
+    anchorRequestPathSchema,
+    anchorRequestBodySchema,
+    visualizationPostRequestBodySchema,
+    AnchorService,
+    VisualizationService,
+} from "@/modules/visualization";
 import {TimelineService} from "@/modules/timeline";
-import {getAnchor, createAnchor, createVisualization} from "@/modules/visualization/schemas";
 import {createTimeline, getTimeline} from "@/modules/timeline/schemas";
 import {howToUse} from "@/mcp/descriptions";
 
@@ -33,7 +38,7 @@ export const getServer = () => {
     server.tool(
         "create-anchor",
         "Creates an anchor pointing to a sticky note with a given label. Important: read the how-to before use.",
-        createAnchor.shape,
+        anchorRequestBodySchema.shape,
         async ({boardId, anchorLabel}) => {
             const anchor = await anchorService.create(boardId, anchorLabel);
             return {
@@ -73,7 +78,7 @@ export const getServer = () => {
     server.tool(
         "get-anchor",
         "Retrieves an anchor by its identity. Important: read the how-to before use.",
-        getAnchor.shape,
+        anchorRequestPathSchema.shape,
         async ({anchorId}) => {
             const anchor = await anchorService.get(anchorId);
             return {
@@ -121,7 +126,7 @@ export const getServer = () => {
     server.tool(
         "create-visualization",
         "Creates a visualization for a timeline at a specific anchor. Important: read the how-to before use.",
-        createVisualization.shape,
+        visualizationPostRequestBodySchema.shape,
         async ({timelineId, anchorId}) => {
             const timeline = await timelineService.get(timelineId);
             const anchor = await anchorService.get(anchorId);

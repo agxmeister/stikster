@@ -24,7 +24,7 @@ export const getIntervals = (
     const current = acc.intervals[acc.intervals.length - 1];
 
     if (isInProgressOrDone) {
-        if (!current || ((!acc.ongoing) && (getDay(change.created) > getDay(current.end)))) {
+        if (!current || ((!acc.ongoing || acc.idle) && (getDay(change.created) > getDay(current.end)))) {
             acc.intervals.push({
                 start: change.created,
                 end: change.created,

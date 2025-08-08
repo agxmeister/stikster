@@ -1,9 +1,10 @@
+import {z as zod} from "zod";
 import {container} from "@/container";
-import {AnchorService} from "@/modules/visualization";
+import {AnchorService, anchorRequestBodySchema} from "@/modules/visualization";
 
 export async function POST(request: Request): Promise<Response>
 {
-    const data = await request.json();
+    const data: zod.infer<typeof anchorRequestBodySchema> = await request.json();
 
     const anchorService = container.get(AnchorService);
     const anchor = await anchorService.create(data.boardId, data.label);

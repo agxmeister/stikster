@@ -1,3 +1,6 @@
+import {z as zod} from "zod";
+import {anchorSchema, siteSchema, cursorSchema, positionSchema, sizeSchema} from "./schema/anchor";
+
 export type Visualization = {
     id: string,
     tracks: Track[],
@@ -18,27 +21,8 @@ export type Leaf = {
     sticker: string,
 }
 
-export type Anchor = {
-    id: string,
-    site: Site,
-}
-
-export type Site = {
-    board: string,
-    cursor: Cursor,
-}
-
-export type Cursor = {
-    position: Position,
-    size: Size,
-}
-
-export type Position = {
-    x: number,
-    y: number,
-}
-
-export type Size = {
-    width: number,
-    height: number,
-}
+export type Anchor = zod.infer<typeof anchorSchema>;
+export type Site = zod.infer<typeof siteSchema>;
+export type Cursor = zod.infer<typeof cursorSchema>;
+export type Position = zod.infer<typeof positionSchema>;
+export type Size = zod.infer<typeof sizeSchema>;

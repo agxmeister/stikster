@@ -1,9 +1,10 @@
+import {z as zod} from "zod";
 import {container} from "@/container";
-import {AnchorService} from "@/modules/visualization";
+import {AnchorService, anchorRequestPathSchema} from "@/modules/visualization";
 
 export const GET = async (
     _: Request,
-    {params}: {params: Promise<{anchorId: string}>}
+    {params}: {params: Promise<zod.infer<typeof anchorRequestPathSchema>>}
 ): Promise<Response> => {
     const {anchorId} = await params;
 
@@ -26,7 +27,7 @@ export const GET = async (
 
 export const DELETE = async (
     _: Request,
-    {params}: {params: Promise<{anchorId: string}>}
+    {params}: {params: Promise<zod.infer<typeof anchorRequestPathSchema>>}
 ): Promise<Response> => {
     const {anchorId} = await params;
 
