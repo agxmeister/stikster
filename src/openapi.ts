@@ -64,8 +64,8 @@ export const openApiDocument = createDocument({
                     '200': {
                         description: 'Anchor deleted.',
                     },
-                    '404': {
-                        description: 'Anchor not found.',
+                    '500': {
+                        description: 'Failed to delete anchor.',
                     },
                 },
             },
@@ -141,6 +141,20 @@ export const openApiDocument = createDocument({
                     },
                     '404': {
                         description: 'Configuration not found or invalid.',
+                    },
+                },
+            },
+            delete: {
+                summary: 'Deletes a configuration by its identity.',
+                requestParams: {
+                    path: configurationRequestPathSchema,
+                },
+                responses: {
+                    '200': {
+                        description: 'Configuration deleted.',
+                    },
+                    '500': {
+                        description: 'Failed to delete configuration.',
                     },
                 },
             },

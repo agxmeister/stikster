@@ -1,9 +1,10 @@
+import {z as zod} from "zod";
 import {container} from "@/container";
-import {ConfigurationService, configurationDataSchema} from "@/modules/configuration";
+import {ConfigurationService, configurationDataSchema, configurationRequestPathSchema} from "@/modules/configuration";
 
 export const GET = async (
     _: Request,
-    {params}: {params: Promise<{configurationId: string}>}
+    {params}: {params: Promise<zod.infer<typeof configurationRequestPathSchema>>}
 ): Promise<Response> => {
     const {configurationId} = await params;
 
@@ -26,7 +27,7 @@ export const GET = async (
 
 export const PUT = async (
     request: Request,
-    {params}: {params: Promise<{configurationId: string}>}
+    {params}: {params: Promise<zod.infer<typeof configurationRequestPathSchema>>}
 ): Promise<Response> => {
     const {configurationId} = await params;
 
@@ -58,4 +59,38 @@ export const PUT = async (
     }
 
     return Response.json(configuration);
+}
+
+export const DELETE = async (
+    _: Request,
+    {params}: {params: Promise<zod.infer<typeof configurationRequestPathSchema>>}
+): Promise<Response> => {
+    const {configurationId} = await params;
+
+    const configurationService = container.get(ConfigurationService);
+
+    try {
+        const configuration = await configurationService.get(configurationId);
+        if (configuration) {
+            await configurationService.delete(configurationId);
+        }
+        return Response.json(
+            {
+                message: `Configuration ${configurationId} has been successfully deleted.`,
+            },
+            {
+                status: 200,
+            }
+        );
+    } catch (error) {
+        return Response.json(
+            {
+                error: `Failed to delete configuration ${configurationId}.`,
+                details: error,
+            },
+            {
+                status: 500,
+            }
+        );
+    }
 }

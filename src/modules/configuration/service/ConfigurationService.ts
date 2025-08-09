@@ -23,4 +23,9 @@ export class ConfigurationService
     {
         return await this.configurationRepository.update(id, data);
     }
+
+    async delete(id: string): Promise<void>
+    {
+        return await this.configurationRepository.delete(id);
+    }
 }

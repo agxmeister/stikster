@@ -59,4 +59,13 @@ export class ConfigurationRepository
 
         return updatedConfiguration;
     }
+
+    async delete(id: string): Promise<void>
+    {
+        try {
+            await fs.promises.unlink(`${process.env.DATA_PATH}/configurations/${id}.json`);
+        } catch (error) {
+            console.error(`Error deleting configuration with id ${id}:`, error);
+        }
+    }
 }
